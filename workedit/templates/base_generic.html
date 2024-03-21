@@ -123,6 +123,10 @@
     <hr/>
     <div class="footer">
       <p>版权所有 © 2023 我们的征途是诸天万界</p>
+      <div>{% block footer %} 
+        <a href="https://beian.miit.gov.cn/" target="_blank">蜀ICP备2024052011号-1</a>
+        <img src="{% static 'workedit/picture/beian.png' %}" width="16px" height="16px">
+        <a href=\"https://beian.mps.gov.cn/#/query/webSearch?code=51132102000222\" rel=\"noreferrer\" target=\"_blank\">川公网安备51132102000222</a>{% endblock %}</div>
     </div>
     <!-- Bootstrap JS -->
     {% comment %} <script type="text/javascript" src="{% static 'library/jquery.min.js' %}"></script>
