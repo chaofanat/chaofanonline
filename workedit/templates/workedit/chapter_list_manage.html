@@ -1,0 +1,49 @@
+{% extends 'base_generic.html' %}
+{% block content %}
+  <div id="main">
+<div class="container mt-4">
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">章节名</th>
+                <th scope="col">所属小说</th>
+                <th scope="col">创建日期</th>
+                <th scope="col">最后更新时间</th>
+                <th scope="col">是否发布</th>
+                <th scope="col">操作</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for chapter in chapters %}
+            <tr>
+                <td><a class="text-decoration-none" href="{% url 'chapter_detail' chapter.novel_id.novel_id chapter.chapter_id %}">{{ chapter.title }}</a></td>
+                <td>《{{ chapter.novel_id.title }}》</td>
+                <td>{{ chapter.publish_date }}</td>
+                <td>{{ chapter.renew_time }}</td>
+                <td>{{ chapter.publish_enable }}</td>
+                <td>
+                    <a href="{% url 'chapter_manage_publish' chapter.chapter_id %}" class="btn btn-primary">发布</a>
+                    <a href="{% url 'chapter_manage_nopublish' chapter.chapter_id %}" class="btn btn-danger">取消发布</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% if is_paginated %}
+    <div class="pagination">
+        <span class="page-links">
+            {% if page_obj.has_previous %}
+                <a href="{{ request.path }}?page={{ page_obj.previous_page_number }}">上一页</a>
+            {% endif %}
+            <span class="page-current">
+                Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+            </span>
+            {% if page_obj.has_next %}
+                <a href="{{ request.path }}?page={{ page_obj.next_page_number }}">下一页</a>
+            {% endif %}
+        </span>
+    </div>
+  {% endif %}
+</div>
+</div>
+{% endblock %}

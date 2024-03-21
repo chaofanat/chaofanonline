@@ -1,0 +1,201 @@
+{% extends 'base_generic.html' %}
+{% block content %}
+  <div id="main">
+    {%if novels %}
+    <div class="container mt-5">
+      <div class="row">
+          <div class="col-12">
+              <h1>上传小说列表</h1>
+          </div>
+      </div>
+      <div class="row">
+          <div class="col-12 table-responsive-lg">
+              <table class="table">
+                  <thead>
+                      <tr>
+                          <th class="col-3">文件名</th>
+                          <th class="col-1">用户</th>
+                          <th class="col-2">创建时间</th>
+                          <th class="col-3">状态</th>
+                          <th class="col-2">审核结果</th>
+                      </tr>
+                  </thead>
+                  <tbody>
+                      {% for novel in novels %}
+                          <tr>
+                              <td><a href="{{ novel.source_url }}" target="_blank">《{{ novel.file_name }}》</a></td>
+                              <td>{{ novel.user.username }}</td>
+                              <td>{{ novel.create_time }}</td>
+                              <td>{{ novel.source_state }}</td>
+                              <td>{{ novel.check_result }}</td>
+                          </tr>
+                      {% endfor %}
+                  </tbody>
+              </table>
+          </div>
+      </div>
+  </div>
+  {% endif %}
+    <div class="container">
+        <div class="border p-4">
+            <h2 class="mb-4">上传小说TXT</h2>
+            
+            <form  id="uploadForm" method="post" enctype="multipart/form-data" class="mb-4">
+                {% csrf_token %}
+                <div class="mb-3">
+                    <label for="novelTitle" class="form-label">小说标题</label>
+                    <input type="text" class="form-control" id="novelTitle" name="novelTitle" required>
+                </div>
+                <!-- 章节名匹配正则表达式-->
+                <div class="mb-3">
+                    <label for="chapterPattern" class="form-label">章节名正则表达式</label>
+                    <input type="text" class="form-control" id="chapterPattern" name="chapterPattern" value="第\d{3,4}章 .+" required>
+                </div>
+                <div class="mb-3">
+                    <label for="novelFile" class="form-label">选择TXT文件</label>
+                    <input type="file" class="form-control" id="novelFile" name="novelFile" accept=".txt" required>
+                </div>
+                
+                <button type="submit" class="btn btn-primary">上传</button>
+                <hr/>
+                <!-- 如果有提示信息，可以在这里显示 -->
+                <div id="message" class="message"></div>
+                <!-- 文件上传注意事项-->
+                <p class="mt-3">
+                    <strong>注意事项：</strong>
+                    <ol>
+                        <li>TXT文件编码必须为UTF-8，可使用记事本打开txt文件另存为UTF-8格式</li>
+                        <li>TXT文件章节行必须独立成行</li>
+                        <li>TXT文件每行的章节名必须符合正则表达式，默认的正则表达式所匹配的章节名类似：第001章 楔子</li>
+                        <li>正则表达式不会写可以<a href="{% url 'ai_chat' %}">问问ai</a>，这里是一个提示词"请为我生成能够匹配”第001章 妻子“这样的章节名称的正则表达式，其中的数字最长为4位"</li>
+                    </ol>
+                </p>
+            </form>
+        </div>
+    </div>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/spark-md5/3.0.2/spark-md5.min.js"></script>
+<script src="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/FileSaver.js/2014-08-29/FileSaver.min.js"></script>
+<script>
+    document.getElementById('uploadForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+        //增加文件编码格式校验，通过弹窗将文件前20字符展示给用户查看，是否存在异常，若用户确定无异常，则继续，否则停止上传
+        var testfile = document.getElementById("novelFile").files[0];
+        var testreader = new FileReader();
+        testreader.readAsText(testfile, 'UTF-8');
+        testreader.onload = function(event) {
+          var fileString = event.target.result;
+          var lines = fileString.split('\n');
+          if (lines[0].length > 20) {
+            var showstr = lines[0].substring(0, 20);
+          } else {
+            var showstr = lines[0];
+          }
+          var r = confirm("文件第一行内容是否显示正常？\n" + showstr);
+          if (r == true) {
+            alert("开始上传文件");
+           
+            //对上传的小说txt文件进行解析，获取章节名以及对于章节内容
+            var reader = new FileReader();
+            var novelTitle = document.getElementById("novelTitle").value;
+            var file = document.getElementById("novelFile").files[0];
+            reader.readAsText(file, 'UTF-8');
+            reader.onload = function(event){
+              var fileString = event.target.result;
+              var lines = fileString.split('\n');
+              var chapter_title_index = [];
+              var pattern = new RegExp(document.getElementById("chapterPattern").value);
+              for (var i = 0; i < lines.length; i++) {
+                if(pattern.test(lines[i])) {
+                  chapter_title_index.push(i);
+                } 
+                lines[i] = lines[i].replace(/[\r\n]/g, '');
+                lines[i] = lines[i].replace(/ *$/, '');
+                lines[i] = lines[i].replace(/^ */, '');
+                lines[i] = lines[i].replace(/　/g, '');
+              }
+              var txtinfo = {
+                "chapter_title_index": chapter_title_index,
+                "txtcontent": lines
+              }
+
+              var jsonString = JSON.stringify(txtinfo);
+              //将JSON字符串写入一个新文件
+              var blob = new Blob([jsonString], {type: "application/json;charset=utf-8",name: novelTitle + ".json"});
+              var file = new File([blob], blob.name, {type: blob.type});
+
+              const chunkSize = 1024 * 1024;
+              var uploadurl = "{% url 'novel_upload_chunked' %}";
+              var callbackelement = document.getElementById("message");
+              var filename = novelTitle
+              uploadFile(file, filename, chunkSize, uploadurl, callbackelement);
+            }
+          } else {
+            alert("取消上传文件");
+            return;
+          }
+        }
+        
+        
+      });
+
+
+      function uploadFile(file,filename,chunkSize,uploadurl,callbackelement) {
+
+        var chunks = Math.ceil(file.size / chunkSize);
+        var currentChunk = 0;
+      
+        function sendChunk() {
+          var start = currentChunk * chunkSize;
+          var end = Math.min(file.size, start + chunkSize);
+          var chunk = file.slice(start, end);
+          var reader = new FileReader();
+          reader.readAsArrayBuffer(chunk);
+          reader.onload = function(evt) {
+            md5 = SparkMD5.ArrayBuffer.hash(evt.target.result);
+            var formData = new FormData();
+            formData.append('file', chunk);
+            formData.append('chunk', currentChunk);
+            formData.append('chunks', chunks);
+            formData.append('hash', md5);
+            formData.append('filename', filename);
+            //打印chunk的前10个字符，用于验证
+        
+            
+            fetch(uploadurl, {
+              method: 'POST',
+              body: formData,
+              headers: {'X-CSRFToken': '{{ csrf_token }}'},
+            })
+              .then(response => response.json())
+              .then(data => {
+                if (data.success) {
+                  //加一个进度条
+                  var progress = parseInt(currentChunk / chunks * 100, 10);
+                  callbackelement.innerHTML = '文件上传进度：' + progress + '%';
+                  currentChunk++;
+                  if (currentChunk < chunks) {
+                    sendChunk();
+    
+                  } else {
+                    callbackelement.innerHTML = '文件上传成功！';
+                  }
+                } else {
+                  var progress = parseInt(currentChunk / chunks * 100, 10);
+                  callbackelement.innerHTML = '文件上传进度：' + progress + '%';
+                  sendChunk();
+                }
+              })
+              .catch(error => {
+                var progress = parseInt(currentChunk / chunks * 100, 10);
+                callbackelement.innerHTML = '文件上传进度：' + progress + '%';
+                callbackelement.innerHTML += '文件上传出错！';
+              });
+          };
+          
+    
+        }
+        sendChunk();
+      }
+</script>
+  </div>
+  {% endblock %}

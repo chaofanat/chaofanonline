@@ -1,0 +1,150 @@
+
+{% extends 'toolsbase_generic.html' %}
+
+{% block content %}
+
+<div id="main" class="d-flex flex-row">
+
+    <div class="container mt-5">
+        <h1 class="mb-4">文字转音频</h1>
+        <form id='form' >
+            {% csrf_token %}
+        <div class="row">
+            <div class="col-md-6">
+                <label for="textInput" class="form-label">输入文本,注意尽量在60字符以内</label>
+                <textarea maxlength="200" name="text" class="form-control" id="textInput" rows="3">{% if audioconfig %}{{ audioconfig.text }}{% endif %}</textarea>
+            </div>
+            <div class="col-md-6">
+
+                <div>
+                <label for="perInput" class="form-label">选择PER参数</label>
+                <select name="voicer" class="form-select mb-3" id="perInput">
+                    {% if audioconfig %}
+                    <option value="{{ audioconfig.voicer }}" selected>{{ audioconfig.voicer_display }}</option>
+                    {% endif %}
+                    <option value="1">度小宇</option>
+                    <option value="0">度小美</option>
+                    <option value="3">度逍遥（基础）</option>
+                    <option value="4">度丫丫</option>
+                    <option value="5003">度逍遥（精品）</option>
+                    <option value="5118">度小鹿</option>
+                    <option value="106">度博文</option>
+                    <option value="110">度小童</option>
+                    <option value="111">度小萌</option>
+                    <option value="103">度米朵</option>
+                    <option value="5">度小娇</option>
+                </select>
+                </div>
+                <div>
+                    <label for="speed">语速:</label><span class="value" id="speedValue">{% if audioconfig %}{{ audioconfig.speed }}{% else %}5{% endif %}</span>
+                    {% if audioconfig %}
+                    <input name="speed" class='w-100' type="range" id="speed" name="speed" min="1" max="15" value="{{ audioconfig.speed }}">
+                    {% else %}
+                    <input name="speed" class='w-100' type="range" id="speed" name="speed" min="1" max="15" value="5">
+                    {% endif %}
+                </div>
+                <div>
+
+                    <label for="pitch">音调:</label><span class="value" id="pitchValue">{% if audioconfig %}{{ audioconfig.pitch }}{% else %}5{% endif %}</span>
+                    {% if audioconfig %}
+                    <input name="pitch" class='w-100' type="range" id="pitch" name="pitch" min="1" max="15" value="{{ audioconfig.pitch }}">
+                    {% else %}
+                    <input name="pitch" class='w-100' type="range" id="pitch" name="pitch" min="1" max="15" value="5">
+                    {% endif %}
+                </div>
+                <div>
+                    <label for="volume">音量:</label><span class="value" id="volumeValue">{% if audioconfig %}{{ audioconfig.volume }}{% else %}5{% endif %}</span>
+                    {% if audioconfig %}
+                    <input name="volume" class='w-100' type="range" id="volume" name="volume" min="1" max="15" value="{{ audioconfig.volume }}">
+                    {% else %}
+                    <input name="volume" class='w-100' type="range" id="volume" name="volume" min="1" max="15" value="5">
+                    {% endif %}
+                </div>
+                <div>
+                <label for="aueInput" class="form-label">文件格式</label>
+                <select name="audio_format" class="form-select" id="aueInput">
+                    {% if audioconfig %}
+                    <option value="{{ audioconfig.audio_format }}" selected>{{ audioconfig.audio_format_display }}</option>
+                    {% endif %}
+                    <option value="3">MP3</option>
+                    <option value="4">pcm-16k</option>
+                    <option value="5">pcm-8k</option>
+                    <option value="6">wav</option>
+                </select>
+                </div>  
+                <button type='button' class="btn btn-primary mt-3" onclick="convert()">提交</button>
+                <div>
+                <audio class="mt-3" id="audio" controls="controls" >
+                    <source src="" type="audio/mpeg">
+                </audio>
+              
+                </div>
+                <a type="button" class="btn btn-secondary mt-3" href="{% url 'tools_tts_list' %}">历史记录</a>
+            </div>
+        </div>
+        </form>
+    </div>
+
+
+
+
+
+</div>
+
+<script>
+function convert() {
+  
+        var text = document.getElementById('textInput').value; // 获取<textarea>的值
+  
+        if (!text) {
+            // 文本为空时的处理逻辑
+            alert('文本不能为空');
+            return; // 阻止表单提交
+        }else{
+
+        var formData = new FormData(document.getElementById('form')); // 获取表单中的数据
+        
+        fetch('{% url "tools_tts" %}', {
+          method: 'POST', // 设置请求方法为POST
+          body: formData, // 设置请求体为表单数据
+          headers: {
+            'X-CSRFToken': '{{ csrf_token }}' // 设置CSRF令牌
+          }
+        })
+        .then(function(response) {
+          if (response.status === 200) {
+            // 请求成功时的处理逻辑
+            alert('提交成功');
+            jsonData = response.json();
+            return jsonData; // 解析响应为JSON数据
+          } else {
+            // 请求失败时的处理逻辑
+            throw new Error('提交失败：' + response.statusText);
+          }
+        })
+        .then(function(jsonData) {
+          // 解析JSON数据
+          var audio_url = jsonData['audio_url'];
+           //将audio_url数据赋值给a标签的src属性，实现自动播放
+          document.getElementById("audio").src = audio_url;
+        })
+        .catch(function(error) {
+          // 处理网络错误或其他错误
+          alert(error.message);
+        });
+        }
+        
+      }
+      
+
+    document.getElementById('speed').addEventListener('input', function() {
+        document.getElementById('speedValue').textContent = this.value;
+    });
+    document.getElementById('pitch').addEventListener('input', function() {
+        document.getElementById('pitchValue').textContent = this.value;
+    });
+    document.getElementById('volume').addEventListener('input', function() {
+        document.getElementById('volumeValue').textContent = this.value;
+    });
+</script>
+{% endblock %}

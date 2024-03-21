@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>小说阅读界面</title>
+    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/5.1.1/css/bootstrap.min.css" />
+    <script type="text/javascript" src="https://cdn.staticfile.org/twitter-bootstrap/5.1.1/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="https://cdn.staticfile.org/popper.js/2.9.3/umd/popper.min.js"></script>
+</head>
+<body>
+
+<div class="container">
+    <div class="row">
+        <!-- 章节列表，浮动显示-->
+        <div class="col-md-3">
+            <div>
+            <div class="card-header">
+
+                <div class="pagination d-flex justify-content-between">
+                    <button class="last-page btn btn-primary">最后一页</button>
+                    <span class="messaage-text">章节目录</span>
+                    <button class="first-page btn btn-primary">第一页</button>
+                </div>
+            </div>
+            
+            <ul id="chapterList" class="list-group">
+                <!-- 通过JS填充章节列表 -->
+            </ul>
+            <div class="pagination d-flex justify-content-between">
+                <button class="prev-page btn btn-primary">上一页</button>
+                <span class="page-number messaage-text">第1页</span>
+                <button class="next-page btn btn-primary">下一页</button>
+            </div>
+        </div>
+        </div>
+        <div class="col-md-9">
+            <div id="chapterContent" class="border p-3"></div>
+            <div class="pagination justify-content-between">
+                &nbsp;
+                <button class="prev-chapter btn btn-primary">上一章</button>
+                <span class="chapter-number messaage-text">第1章</span>
+                <button class="next-chapter btn btn-primary">下一章</button>
+                &nbsp;
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<script>
+    let currentPage = 0;
+    let currentChapter = 0;
+    
+    const pageSize = 15; // 每页显示15个章节
+    // 获取章节数据
+    fetch('{{ uploadnovel_url }}')
+        .then(response => response.json())
+        .then(data => {
+            var chapterindexlist = data.chapter_title_index
+            const chapterList = document.getElementById('chapterList');
+            const chapterContent = document.getElementById('chapterContent');
+        
+            function displaycontent(index){
+                var content = "<h2>" + data.txtcontent[chapterindexlist[index]] + "</h2><hr/>";
+                for (var j = chapterindexlist[index] + 1; j < chapterindexlist[index+1]; j++) {
+                    content += '<p>'+data.txtcontent[j]+'</p>';
+                }
+                chapterContent.innerHTML = content;
+                document.querySelector('.chapter-number').innerText = `第${index+1}章`;
+            }
+            displaycontent(currentChapter);
+
+            document.querySelector('.next-chapter').addEventListener('click', function() {
+                if (currentChapter < chapterindexlist.length - 1) {
+                    currentChapter++;
+                    displaycontent(currentChapter);
+                    
+                    if (window.matchMedia("(max-width: 767px)").matches) {
+                        document.documentElement.scrollTop = document.getElementById("chapterList").offsetHeight; // 火狐浏览器
+                        document.body.scrollTop = document.getElementById("chapterList").offsetHeight; // 谷歌浏览器
+                    }else{
+                        document.documentElement.scrollTop = 0; // 火狐浏览器
+                        document.body.scrollTop = 0; // 谷歌浏览器
+                    }
+                    
+                    
+                }
+            });
+            
+            document.querySelector('.prev-chapter').addEventListener('click', function() {
+                if (currentChapter > 0) {
+                    currentChapter--;
+                    displaycontent(currentChapter);
+                }
+            });
+
+
+            function displayChapters(startIndex){
+                chapterList.innerHTML = '';
+                for(let i = startIndex*pageSize; i < startIndex*pageSize + pageSize && i < chapterindexlist.length; i++) {
+                    const listItem = document.createElement('li');
+                    listItem.classList.add('list-group-item');
+                    listItem.textContent = data.txtcontent[chapterindexlist[i]];
+                    listItem.addEventListener('click', () => {
+                        //章节内容为data.txtcontent[chapterindex+1]到下一个chapterindex之间的所有文本拼接
+                        var content = "<h2>" + data.txtcontent[chapterindexlist[i]] + "</h2><hr/>";
+                        if (i == chapterindexlist.length - 1) {
+                            for(var j = chapterindexlist[i] + 1; j < data.txtcontent.length; j++) {
+                                content += '<p>'+data.txtcontent[j]+'</p>';
+                            }
+                        }else{
+                            for (var j = chapterindexlist[i] + 1; j < chapterindexlist[i+1]; j++) {
+                                content += '<p>'+data.txtcontent[j]+'</p>';
+                            }
+                        }
+                        
+                        chapterContent.innerHTML = content;
+                        document.querySelector('.chapter-number').innerText = `第${i+1}章`;
+                        currentChapter = i;
+                        //如果是手机浏览
+                        if (window.matchMedia("(max-width: 767px)").matches) {
+                            document.documentElement.scrollTop = document.getElementById("chapterList").offsetHeight; // 火狐浏览器
+                            document.body.scrollTop = document.getElementById("chapterList").offsetHeight; // 谷歌浏览器
+                        }
+                        
+                    });
+                    chapterList.appendChild(listItem);
+                }
+            }
+            displayChapters(currentPage);
+            document.querySelector('.prev-page').addEventListener('click', function() {
+                if (currentPage > 0) {
+                    currentPage--;
+                    displayChapters(currentPage);
+                    document.querySelector('.page-number').innerText = `第${currentPage + 1}页`;
+                }
+            });
+            
+            document.querySelector('.next-page').addEventListener('click', function() {
+                if (currentPage < chapterindexlist.length / pageSize - 1) {
+                    currentPage++;
+                    displayChapters(currentPage);
+                    document.querySelector('.page-number').innerText = `第${currentPage + 1}页`;
+                }
+            });
+
+            document.querySelector('.last-page').addEventListener('click', function() {
+                currentPage = Math.ceil(chapterindexlist.length / pageSize)-1;
+                displayChapters(currentPage);
+                document.querySelector('.page-number').innerText = `第${currentPage + 1}页`;
+            });
+
+            document.querySelector('.first-page').addEventListener('click', function() {
+                currentPage = 0;
+                displayChapters(currentPage);
+                document.querySelector('.page-number').innerText = `第${currentPage + 1}页`;
+            });
+        });
+</script>
+
+</body>
+</html>

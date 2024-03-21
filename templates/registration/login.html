@@ -1,0 +1,48 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+<div id="main" >
+  {% if form.errors %}
+    <p>Your username and password didn't match. Please try again.</p>
+  {% endif %}
+
+  {% if next %}
+    {% if user.is_authenticated %}
+      <p>Your account doesn't have access to this page. To proceed,
+      please login with an account that has access.</p>
+    {% else %}
+      <p>Please login to see this page.</p>
+    {% endif %}
+  {% endif %}
+<div class="container">
+  <h1>用户登录</h1>
+  <hr>
+  <p>请输入用户名和密码</p>
+
+  
+  <form  method="post" action="{% url 'login' %}">
+    {% csrf_token %}
+    <table class="table">
+      <tr class="info table-hover "> 
+        <td class="info" >用户名：</td>
+        <td class="info">{{ form.username }}</td>
+      </tr>
+      <tr class="info table-hover ">
+        <td class="info">密码：</td>
+        <td class="info">{{ form.password }}</td>
+      </tr>
+      <tr>
+        <td><input type="submit" value="登录"></td>
+        <td class="d-flex flex-row">{# Assumes you set up the password_reset view in your URLconf #}
+          <p><a href="{% url 'password_reset' %}">忘记密码？</a></p>
+          </td>
+         
+      </tr>
+    </table>
+    <p>还没有账号？<a href="{% url 'register' %}">点击这里注册</a>.</p>
+    <input type="hidden" name="next" value="{{ next }}">
+  </form>
+</div>
+  
+</div>
+{% endblock %}

@@ -1,0 +1,73 @@
+{% extends "toolsbase_generic.html" %}
+
+{% block content %}
+<div id="main" class="d-flex flex-row">
+
+<div class="container">
+  <h1 class="my-4">文本转语音数据</h1>
+  <table class="table">
+    <thead>
+      <tr>
+        <th scope="col" style="width:23%">文本</th>
+        <th scope="col">配音员</th>
+        <th scope="col">语速</th>
+        <th scope="col">音调</th>
+        <th scope="col">音量</th>
+        <th scope="col">音频格式</th>
+        <th scope="col">操作</th>
+        <th scope="col">创建时间</th>
+      </tr>
+    </thead>
+    <tbody>
+        {% if TTS_list %}
+        {% for obj in TTS_list %}
+      <tr>
+        <td>{{ obj.text }}</td>
+        <td>{{ obj.voicer_display }}</td>
+        <td>{{ obj.speed }}</td>
+        <td>{{ obj.pitch }}</td>
+        <td>{{ obj.volume }}</td>
+        <td>{{ obj.audio_format_display }}</td>
+        <td>
+            <div class='d-flex flex-column'>
+          <audio controls class="me-3">
+            <source src="{{ obj.audio_url_display }}" type="audio/mpeg">
+            您的浏览器不支持音频元素。
+          </audio>
+          <div class='d-flex flex-row'>
+          <button type="button" class="btn btn-danger btn-sm ms-3" ><a href="{% url 'tools_tts_delete' pk=obj.pk %}" style="color:white;">删除</a></button>
+          <button type="button" class="btn btn-success btn-sm ms-3"><a href="{{ obj.audio_url_display }}" download="{{ obj.text }}" style="color:white;">下载</a></button>
+          <button type="button" class="btn btn-primary btn-sm ms-3"><a href="{% url 'tools_ttswithpk' pk=obj.pk %}" target="_blank" style="color:white;">引用配置</a></button>
+          </div>
+        </td>
+        <td>{{ obj.created_at }}</td>
+      </tr>
+      {% endfor %}
+        {% else %}
+        <tr>
+          <td colspan="8">暂无数据,<a href="{% url 'tools_tts' %}">点此进行文本转音频界面。</a></td>
+        </tr>
+        {% endif %}
+      
+    </tbody>
+  </table>
+  {% if is_paginated %}
+  <div class="pagination">
+      <span class="page-links">
+          {% if page_obj.has_previous %}
+              <a href="{{ request.path }}?page={{ page_obj.previous_page_number }}">上一页</a>
+          {% endif %}
+          <span class="page-current">
+              Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+          </span>
+          {% if page_obj.has_next %}
+              <a href="{{ request.path }}?page={{ page_obj.next_page_number }}">下一页</a>
+          {% endif %}
+      </span>
+  </div>
+{% endif %}
+</div>
+
+</div>
+
+{% endblock %}

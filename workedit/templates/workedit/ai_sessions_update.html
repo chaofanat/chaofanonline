@@ -1,0 +1,15 @@
+{% extends 'base_generic.html' %}
+{% block content %}
+<div id="main" class="d-flex flex-row">
+
+<form action="" method="post">
+    {% csrf_token %}
+    <table>
+      {{ form }}
+    </table>
+    <input type="submit" value="修改" />
+  </form>
+
+
+</div>
+  {% endblock %}

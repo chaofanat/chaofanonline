@@ -1,0 +1,36 @@
+{% extends 'base_generic.html' %}
+{% block content %}
+  <div id="main">
+<div class="container mt-4">
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">{{ workedit_chapters.first.novel_id.title }}</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for chapter in workedit_chapters %}
+            <tr>
+                <td><a class="text-decoration-none" href="{% url 'workedit_chapter_detail' chapter.novel_id.novel_id chapter.chapter_id %}">{{ chapter.title }}</a></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% if is_paginated %}
+    <div class="pagination">
+        <span class="page-links">
+            {% if page_obj.has_previous %}
+                <a href="{{ request.path }}?page={{ page_obj.previous_page_number }}">上一页</a>
+            {% endif %}
+            <span class="page-current">
+                Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+            </span>
+            {% if page_obj.has_next %}
+                <a href="{{ request.path }}?page={{ page_obj.next_page_number }}">下一页</a>
+            {% endif %}
+        </span>
+    </div>
+  {% endif %}
+</div>
+</div>
+{% endblock %}

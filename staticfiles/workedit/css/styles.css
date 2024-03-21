@@ -1,0 +1,12 @@
+
+#row {
+    min-height: 90vh;
+}
+
+#main {
+    position: relative;
+    top: 10%;
+    left: 2%;
+    margin: auto;
+    width: 100%;
+}

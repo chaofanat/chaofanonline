@@ -1,0 +1,230 @@
+{% extends 'base_generic.html' %}
+{% block content %}
+<div id="main" class="d-flex flex-row">
+     <!-- 这里是页面的主要内容 -->
+<div id="ai_chat_nav" >
+    <!-- 这里存放会话信息以及新建会话 -->
+    
+    <ul class="navbar-nav">
+        {% if aisessions %}
+        {% for session in aisessions %}
+        <li class="nav-item d-flex flex-row">
+            <a href="{% url 'delete_session' session.id %}" class="nav-link" >×</a>
+            &nbsp;&nbsp;&nbsp;
+            <a href="{% url 'ai_chat_withvalue' session.id %}" class="nav-link" >
+                {{ session.session_title }}
+            </a>
+            &nbsp;&nbsp;
+           <a href="{% url 'update_session' session.id %}" class="nav-link" >修改</a>
+        </li>
+        {% endfor %}
+        {% else %}
+        <li class="nav-item" >No sessions are available.</li>
+        {% endif %}
+    </ul>
+    <a class="btn btn-primary" href="{% url 'new_session' %}">新建会话</a>
+</div>
+<div id="chatBox" class="markdownx" >
+    <div id="chatMessages" >
+        {% if aisession_content %}
+        {% for message in aisession_content %}
+        <div >
+            <div>{{ message.role }} : </div>
+            <div class="markdownx-editor" hidden>{{ message.content }}</div>
+            <div class="markdownx-preview"> </div>
+            <br>
+        </div>
+            {% endfor %}
+        {% else %}
+            <div>请在下方输入你的问题！</div>
+        {% endif %}
+    </div>
+    <div class="input-group d-flex flex-row">
+    <input class="w-75" type="form-control" id="userInput">
+    <button class="w-25 btn btn-primary" id="sendButton" type="button" onclick="sendMessage()">发送</button>
+    </div>
+    <div class="d-flex flex-row" id="tools">
+        <button id="fullscreen-btn" class="btn btn-primary m-1" type="button" >全屏</button>
+    </div>
+</div>
+
+</div>
+
+
+
+
+<!-- 引入Marked.js,对数据库存储的markdown文本进行解析 -->
+<script type="text/javascript" >
+    var markdownTextdom = document.getElementsByClassName('markdownx-editor')
+    var previews = document.getElementsByClassName('markdownx-preview')
+    if(previews.length == markdownTextdom.length) {
+        for (var i=0; i<markdownTextdom.length; i++) { // 替换为你的 Markdown 文本
+            var markdownText = markdownTextdom[i].innerHTML;
+            var html = marked.parse(markdownText);
+            previews[i].innerHTML = html + '<button class="copytextButton btn btn-primary" type="button" >复制</button>';
+        }
+    }
+</script>
+
+
+
+
+
+
+<!-- ajax请求ai会话结果 -->
+<script>
+<!-- 启用回车键触发事件 -->
+document.onkeyup = function(event) {
+    if (event.keyCode == 13) {
+        //按钮没有被禁用时，不触发事件
+        if (!document.getElementById('sendButton').disabled) {
+            sendMessage();
+        }  
+    }
+};
+function sendMessage() {
+    var userInput = document.getElementById('userInput').value;
+
+    if (userInput!=="") {
+        // 调用后端API
+        <!-- 禁用提交按钮，防止重复提交 -->
+        document.getElementById('userInput').disabled = true;
+        document.getElementById('sendButton').disabled = true;
+        <!-- button按钮的内容变为上传中... -->
+        document.getElementById('sendButton').innerHTML = "发送中...";
+        fetch('{% url 'ai_chat' %}', {
+            method: 'POST',
+            body: JSON.stringify({'message': userInput,'aisession_id': '{{ aisession_id }}'}),
+            headers: {'Content-Type': 'application/json','X-CSRFToken': '{{ csrf_token }}'},//注意csrftoken
+        })
+        .then(response => response.json())
+        .then(data => {
+            var chatMessages = document.getElementById('chatMessages');
+            chatMessages.innerHTML += '<div>user: ' +'<br>'+ '<div>'+ '<p>'+ userInput +'</p>' +'<button class="copytextButton btn btn-primary" type="button" >复制</button>' + '</div>' + '</div>' +'<br>';
+            if (data.reply) {
+                chatMessages.innerHTML += '<div>assistant: ' +'<br>'+ '<div>' +marked.parse(data.reply)+ '<button class="copytextButton btn btn-primary" type="button" >复制</button>' + '</div>' + '</div>' +'<br>';
+            } else {
+                chatMessages.innerHTML += '<div>assistant: ' +'<br>'+ data.error + '</div>' + '<br>';
+            }
+            document.getElementById('userInput').value = '';
+            document.getElementById('userInput').disabled = false;
+            document.getElementById('sendButton').disabled = false;
+            document.getElementById('sendButton').innerHTML = "发送";
+            // 将chatMessages的页面向下滚动到底部，以便用户查看新消息
+            chatmessagebox = document.getElementById('chatMessages');
+            chatmessagebox.scrollTop = chatmessagebox.scrollHeight;
+        });
+    }
+
+}
+
+
+
+
+
+
+
+<!-- 实现复制功能 -->
+// 为多个 button 添加事件监听器
+//每当页面节点更新时，都会重新添加事件监听器
+const observer = new MutationObserver(function(mutations) {
+    mutations.forEach(function(mutation) {
+      // 处理DOM变化
+      var buttons = Array.from(document.getElementsByClassName('copytextButton'));
+      buttons.forEach(function(button) {
+        button.addEventListener('click', buttonClickHandler);
+      });
+    });
+  });
+  
+observer.observe(document.body, {
+    childList: true,
+    subtree: true
+  });
+function buttonClickHandler(event) {
+    // 使用 event.currentTarget 获取触发事件的 button 元素
+    var currentbutton = event.currentTarget;
+    
+    var siblings = currentbutton.parentNode.children;
+    var clipboardContent = "";
+    // 遍历所有兄弟元素，并将它们的文本内容添加到 clipboardContent 中
+    for (var i = 0; i < siblings.length-1; i++) {
+        if (siblings[i] !== currentbutton) {
+            clipboardContent += siblings[i].textContent + "\n";
+        }
+    }
+    
+    navigator.clipboard.writeText(clipboardContent);
+    
+    // 更改 button 的文本内容以表示复制成功
+    currentbutton.textContent = "已复制";
+  }
+</script>
+
+
+
+
+
+
+
+
+<!-- 实现全屏功能 -->
+<script>
+    const fullscreenBtn = document.getElementById('fullscreen-btn');
+    const myForm = document.getElementById('chatBox');
+  
+    fullscreenBtn.addEventListener('click', (event) => {
+        event.preventDefault(); // 阻止默认提交行为
+        //检查是否是满屏状态，如果不是，点击按钮执行全屏操作
+        if (!document.fullscreenElement) {
+          if (myForm.requestFullscreen) {
+            myForm.requestFullscreen();
+        } else if (myForm.mozRequestFullScreen) { // Firefox
+            myForm.mozRequestFullScreen();
+        } else if (myForm.webkitRequestFullscreen) { // Chrome, Safari and Opera
+            myForm.webkitRequestFullscreen();
+        } else if (myForm.msRequestFullscreen) { // IE/Edge
+            myForm.msRequestFullscreen();
+        }
+        }
+        else{
+            if (document.exitFullscreen) {
+                document.exitFullscreen();
+            } else if (document.mozCancelFullScreen) { // Firefox
+                document.mozCancelFullScreen();
+            } else if (document.webkitExitFullscreen) { // Chrome, Safari and Opera
+                document.webkitExitFullscreen();
+            } else if (document.msExitFullscreen) { // IE/Edge
+                document.msExitFullscreen();
+            }
+        }
+  
+        
+    });
+  
+    document.addEventListener('fullscreenchange', () => {
+        if (document.fullscreenElement === myForm) {
+            fullscreenBtn.innerHTML = '缩小';
+        } else {
+            fullscreenBtn.innerHTML = '全屏';
+        }
+    });
+  
+    document.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape') {
+            if (document.exitFullscreen) {
+                document.exitFullscreen();
+            } else if (document.mozCancelFullScreen) { // Firefox
+                document.mozCancelFullScreen();
+            } else if (document.webkitExitFullscreen) { // Chrome, Safari and Opera
+                document.webkitExitFullscreen();
+            } else if (document.msExitFullscreen) { // IE/Edge
+                document.msExitFullscreen();
+            }
+        }
+    });
+  </script>
+
+
+
+{% endblock %}
