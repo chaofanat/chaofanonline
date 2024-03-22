@@ -24,7 +24,7 @@ MESSAGE_FRAMEWORK = True
 SECRET_KEY = 'django-insecure-0j$biuvn-co4^&(kqusa5-aj6p4*jz$f4%+u*37wz)k&o64j73'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['*']
 
