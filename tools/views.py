@@ -100,7 +100,11 @@ def TTS_delete(request,pk):
     data = get_object_or_404(txttoaduiodata,id=pk,user=request.user)
     #检查文件是否存在
     if data.audio_url!=None:
-        if os.path.exists(data.audio_url):
-            os.remove(data.audio_url)
+        if settings.DEBUG:
+            url = os.path.join(settings.STATICFILES_DIRS[0],data.audio_url)
+        else:
+            url = os.path.join(settings.STATIC_ROOT,data.audio_url)
+        if os.path.exists(url):
+            os.remove(url)
     data.delete()
     return HttpResponseRedirect('/tools/TTS_list/')
