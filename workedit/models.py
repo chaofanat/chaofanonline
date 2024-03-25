@@ -23,7 +23,7 @@ class Novel(models.Model):
     novel_id = models.AutoField(primary_key=True)
     title = models.CharField(max_length=100,default='取一个高端大气的小说名吧',verbose_name='作品名 ')
     author_id = models.ForeignKey(User, on_delete=models.CASCADE)
-    publish_date = models.DateTimeField()
+    publish_date = models.DateTimeField(auto_now=True)
     introduction = models.CharField(max_length=200,default='我们的征途是诸天万界！',null=True,verbose_name='简介')
     status_choice =(
         ('r', '连载中'),
@@ -34,7 +34,15 @@ class Novel(models.Model):
     enable = models.BooleanField(default=True)
     renew_time = models.DateTimeField(auto_now=True,verbose_name='最后一次更新时间')
     publish_enable = models.BooleanField(default=False)
+    base_novel = models.IntegerField(default=0)
 
+    @property
+    def base_novel_titile(self):
+        if self.base_novel == 0:
+            return '无'
+        else:
+            return Uploadnovel.objects.get(id=self.base_novel).file_name
+        
     @property
     def status_display(self):
         if self.status == 'r':
