@@ -1,3 +1,6 @@
 nginx-1.24.0/logs/nginx.pid
 ChaoFanOnline/settings.py
 ChaoFanOnline/__pycache__/settings.cpython-311.pyc
+ChaoFanOnline/staticfiles/tools/TTSaudio
+ChaoFanOnline/staticfiles/myblog/assets
+ChaoFanOnline/static/myblog/assets
