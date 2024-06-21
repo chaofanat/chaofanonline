@@ -39,11 +39,16 @@ urlpatterns += [
     path('markdownx/', include('markdownx.urls')),
 ]
 
+#add myblog app
+urlpatterns += [
+    path('myblog/', include('myblog.urls')),
+]
+
 #Add URL maps to redirect the base URL to our application
-#将workedit应用作为域名访问的主页
+#将myblog应用作为域名访问的主页
 from django.views.generic import RedirectView
 urlpatterns += [
-    path('', RedirectView.as_view(url='/workedit/')),
+    path('', RedirectView.as_view(url='/myblog/')),
 ]
 
 
@@ -55,7 +60,8 @@ if settings.DEBUG:
 else:
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
-
+#添加meida文件访问
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 
 from django.conf.urls import include

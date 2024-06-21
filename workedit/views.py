@@ -107,14 +107,26 @@ class workedit_chapter_detail(LoginRequiredMixin,generic.DetailView):
         return context
    
 from django import forms
-class novel_list(LoginRequiredMixin,generic.ListView,CreateView):
+class novel_list(LoginRequiredMixin,generic.ListView):
     model = Novel
-    fields=['title',"introduction"]
     template_name = 'workedit/novel_list.html'
     context_object_name = 'novel_list'
     paginate_by = 10
-    object = None
-    success_url = "#"
+
+    #新增上下文模板变量
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['base_novel_list'] = Uploadnovel.objects.filter(enable=True)
+        return context
+    #定义post请求
+    def post(self, request, *args, **kwargs):
+        title = request.POST.get('title','')
+        introduction = request.POST.get('introduction','')
+        base_novel = request.POST.get('base_novel','')
+        if title and introduction and base_novel:
+            Novel.objects.create(title=title,introduction=introduction,base_novel=base_novel,author_id=request.user)
+
+        return HttpResponseRedirect(reverse('novel_list'))
 
     #设置author为当前用户,publish_date为当前时间
     def form_valid(self, form):

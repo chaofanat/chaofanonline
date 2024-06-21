@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+  <title>ZenBlog Bootstrap Template - Index</title>
+  <meta content="" name="description">
+  <meta content="" name="keywords">
+
+  <!-- Favicons -->
+  <link href="/static/myblog/assets/img/favicon.png" rel="icon">
+  <link href="/static/myblog/assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;500&family=Inter:wght@400;500&family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&display=swap"
+    rel="stylesheet">
+
+  <!-- Vendor CSS Files -->
+  <link href="/static/myblog/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="/static/myblog/assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+  <link href="/static/myblog/assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+  <link href="/static/myblog/assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+  <link href="/static/myblog/assets/vendor/aos/aos.css" rel="stylesheet">
+
+  <!-- Template Main CSS Files -->
+  <link href="/static/myblog/assets/css/variables.css" rel="stylesheet">
+  <link href="/static/myblog/assets/css/main.css" rel="stylesheet">
+
+  <!-- =======================================================
+  * Template Name: ZenBlog
+  * Template URL: https://bootstrapmade.com/zenblog-bootstrap-blog-template/
+  * Updated: Mar 17 2024 with Bootstrap v5.3.3
+  * Author: BootstrapMade.com
+  * License: https:///bootstrapmade.com/license/
+  ======================================================== -->
+</head>
+
+<body>
+
+  <!-- ======= Header ======= -->
+  <header id="header" class="header d-flex align-items-center fixed-top">
+    <div class="container-fluid container-xl d-flex align-items-center justify-content-between">
+
+      <a href="/myblog/index.html" class="logo d-flex align-items-center">
+        <!-- Uncomment the line below if you also wish to use an image logo -->
+        <!-- <img src="/static/myblog/assets/img/logo.png" alt=""> -->
+        <h1>ChaoFanOnline</h1>
+      </a>
+
+      <nav id="navbar" class="navbar">
+        <ul>
+          <li><a href="/myblog/index.html">博客主页</a></li>
+          <li><a href="/myblog/single-post.html">阅读</a></li>
+          <li><a href="/myblog/category.html">分类</a>
+            <li><a href="/myblog/tag.html">标签归类</a></li>
+          </li>
+
+          <!-- <li><a href="/myblog/about.html">关于</a></li> -->
+          <li><a href="/myblog/contact.html">联系方式</a></li>
+        </ul>
+      </nav><!-- .navbar -->
+
+      <div class="position-relative">
+        <!-- <a href="#" class="mx-2"><span class="bi-facebook"></span></a>
+        <a href="#" class="mx-2"><span class="bi-twitter"></span></a>
+        <a href="#" class="mx-2"><span class="bi-instagram"></span></a> -->
+
+        <a href="#" class="mx-2 js-search-open"><span class="bi-search"></span></a>
+        <i class="bi bi-list mobile-nav-toggle"></i>
+
+        <!-- ======= Search Form ======= -->
+        <div class="search-form-wrap js-search-form-wrap">
+          <form action="https://www.baidu.com/s" method="get" class="search-form" id="search-form">
+            <span class="icon bi-search" onclick="search()"></span>
+            <script>
+              function search(){
+                const form = document.getElementById('search-form');
+                form.wd.value= form.wd.value+" site:chaofan.online";
+                form.submit();
+              }
+            </script>
+            <input type="text" placeholder="Search" name='wd' class="form-control">
+            
+            <button class="btn js-search-close"><span class="bi-x"></span></button>
+            
+          </form>
+        </div><!-- End Search Form -->
+        
+      </div>
+
+    </div>
+
+  </header><!-- End Header -->
+
+  {% block content %}
+
+
+  {% endblock %}
+  <!-- ======= Footer ======= -->
+  <footer id="footer" class="footer">
+
+    <div class="footer-content">
+      <div class="container">
+
+        <div class="row g-5">
+          <div class="col-lg-4">
+            <h3 class="footer-heading">写点什么？</h3>
+            <p>
+              在文字的海洋里航行，每一篇文章都是心灵的航标。拿起笔，不仅是记录生活，更是探索自我，创造无限可能。无论是一段短小的故事，还是一篇深邃的思考，每一次落笔都是勇气与灵感的火花碰撞。不要害怕白纸的空旷，它正等待着你用独特的色彩填满。写作，不仅是与世界的对话，也是与自己灵魂深处的邂逅。在这条路上，或许会有挑战与困惑，但正是这些让我们的思想更加坚韧，笔触愈发深刻。记住，伟大的作品往往源自平凡生活的细微观察与深刻感悟。继续写下去，让心灵的溪流汇聚成河，最终汇入智慧与情感的海洋。你的故事，就是这个世界独一无二的声音。现在，就让我们携手启程，用文字点亮心中的灯塔，照亮前行的道路。
+            </p>
+            <p><a href="/myblog/about.html" class="footer-link-more">Learn More</a></p>
+          </div>
+          <div class="col-6 col-lg-2">
+            <h3 class="footer-heading">导航</h3>
+            <ul class="footer-links list-unstyled">
+              <li><a href="/myblog/index.html"><i class="bi bi-chevron-right"></i> 主页</a></li>
+              <li><a href="/myblog/tag.html"><i class="bi bi-chevron-right"></i> 标签归类</a></li>
+              <li><a href="/myblog/category.html"><i class="bi bi-chevron-right"></i> 分类</a></li>
+              <li><a href="/myblog/single-post.html"><i class="bi bi-chevron-right"></i> 阅读</a></li>
+              <!-- <li><a href="/myblog/about.html"><i class="bi bi-chevron-right"></i> 关于我</a></li> -->
+              <li><a href="/myblog/contact.html"><i class="bi bi-chevron-right"></i> 联系方式</a></li>
+            </ul>
+          </div>
+          <div class="col-6 col-lg-2">
+            <h3 class="footer-heading">外链</h3>
+            <ul class="footer-links list-unstyled">
+              <!-- <li><a href="/myblog/category.html"><i class="bi bi-chevron-right"></i> Business</a></li> -->
+             
+
+            </ul>
+          </div>
+
+          <div class="col-lg-4">
+            <h3 class="footer-heading">其他</h3>
+
+            <ul class="footer-links footer-blog-entry list-unstyled">
+              <li>
+                <a href="/myblog/single-post.html" class="d-flex align-items-center">
+                  <img src="/static/myblog/assets/img/post-sq-1.jpg" alt="" class="img-fluid me-3">
+                  <div>
+                    <div class="post-meta d-block"><span class="date">未知</span> <span class="mx-1">&bullet;</span>
+                      <span>2024.6.21</span>
+                    </div>
+                    <span>where we go?</span>
+                  </div>
+                </a>
+              </li>
+
+            </ul>
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-legal">
+      <div class="container">
+
+        <div class="row justify-content-between">
+          <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
+            <div class="copyright">
+              © Copyright <strong><span>ChaoFanOnline</span></strong>. All Rights Reserved
+            </div>
+            {% load static %}
+            <div class="credits">
+              <!-- All the links in the footer should remain intact. -->
+              <!-- You can delete the links only if you purchased the pro version. -->
+              <!-- Licensing information: https://bootstrapmade.com/license/ -->
+              <!-- Purchase the pro version with working PHP/AJAX contact form: https://bootstrapmade.com/herobiz-bootstrap-business-template/ -->
+              <a href="https://beian.miit.gov.cn/" target="_blank">蜀ICP备2024052011号-1</a>&bullet;
+              <img src="{% static 'workedit/picture/beian.png' %}" width="16px" height="16px">
+              <a href=\"https://beian.mps.gov.cn/#/query/webSearch?code=51132102000222\" rel=\"noreferrer\" target=\"_blank\">川公网安备51132102000222</a>
+            </div>
+
+          </div>
+
+          <div class="col-md-6">
+            <div class="social-links mb-3 mb-lg-0 text-center text-md-end">
+              <a href="#" class="twitter"><i class="bi bi-twitter"></i></a>
+              <a href="#" class="facebook"><i class="bi bi-facebook"></i></a>
+              <a href="#" class="instagram"><i class="bi bi-instagram"></i></a>
+              <a href="#" class="google-plus"><i class="bi bi-skype"></i></a>
+              <a href="#" class="linkedin"><i class="bi bi-linkedin"></i></a>
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+
+  </footer>
+
+  <a href="#" class="scroll-top d-flex align-items-center justify-content-center"><i
+      class="bi bi-arrow-up-short"></i></a>
+
+  <!-- Vendor JS Files -->
+  <script src="/static/myblog/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="/static/myblog/assets/vendor/swiper/swiper-bundle.min.js"></script>
+  <script src="/static/myblog/assets/vendor/glightbox/js/glightbox.min.js"></script>
+  <script src="/static/myblog/assets/vendor/aos/aos.js"></script>
+  <script src="/static/myblog/assets/vendor/php-email-form/validate.js"></script>
+
+  <!-- Template Main JS File -->
+  <script src="/static/myblog/assets/js/main.js"></script>
+
+</body>
+
+</html>
