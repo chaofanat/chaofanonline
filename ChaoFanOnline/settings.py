@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'ckeditor',
     'markdownx',
     'tools.apps.ToolsConfig',
+    'myblog.apps.MyblogConfig',
 ]
 
 #使用ck的工具栏并修改，宽度自适应
@@ -172,7 +173,10 @@ STATICFILES_DIRS = [
 ]
 
 MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, "media")
+if DEBUG:
+    MEDIA_ROOT = os.path.join(BASE_DIR, "static")
+else :
+    MEDIA_ROOT = os.path.join(BASE_DIR, "staticfiles")
 
 #Markdownx设置
 MARKDOWNX_MARKDOWN_EXTENSIONS = [
