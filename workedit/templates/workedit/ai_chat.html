@@ -2,27 +2,34 @@
 {% block content %}
 <div id="main" class="d-flex flex-row">
      <!-- 这里是页面的主要内容 -->
-<div id="ai_chat_nav" >
-    <!-- 这里存放会话信息以及新建会话 -->
-    
-    <ul class="navbar-nav">
+<!-- 假设这是您的侧边栏结构 -->
+<div id="ai_chat_nav" class="bg-light shadow-sm">
+    <div class="py-3 px-4">
+        <h5 class="mb-0">会话管理</h5>
+    </div>
+    <hr class="my-0">
+    <ul class="list-group list-group-flush">
         {% if aisessions %}
-        {% for session in aisessions %}
-        <li class="nav-item d-flex flex-row">
-            <a href="{% url 'delete_session' session.id %}" class="nav-link" >×</a>
-            &nbsp;&nbsp;&nbsp;
-            <a href="{% url 'ai_chat_withvalue' session.id %}" class="nav-link" >
-                {{ session.session_title }}
-            </a>
-            &nbsp;&nbsp;
-           <a href="{% url 'update_session' session.id %}" class="nav-link" >修改</a>
-        </li>
-        {% endfor %}
+            {% for session in aisessions %}
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+                <div>
+                    <a href="{% url 'ai_chat_withvalue' session.id %}" class="text-decoration-none">
+                        {{ session.session_title }}
+                    </a>
+                </div>
+                <div class="d-flex align-items-center">
+                    <a href="{% url 'update_session' session.id %}" class="btn btn-sm btn-secondary mx-1">修改</a>
+                    <a href="{% url 'delete_session' session.id %}" class="btn btn-sm btn-danger mx-1">删除</a>
+                </div>
+            </li>
+            {% endfor %}
         {% else %}
-        <li class="nav-item" >No sessions are available.</li>
+            <li class="list-group-item text-center">暂无可用会话。</li>
         {% endif %}
     </ul>
-    <a class="btn btn-primary" href="{% url 'new_session' %}">新建会话</a>
+    <div class="mt-auto py-3 px-4">
+        <a href="{% url 'new_session' %}" class="btn btn-primary w-100">新建会话</a>
+    </div>
 </div>
 <div id="chatBox" class="markdownx" >
     <div id="chatMessages" >
