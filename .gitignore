@@ -12,5 +12,5 @@ myblog/migrations/
 media/
 mediafiles/
 
-!.gitkeep
-!.gitignore
+!*.gitkeep
+!*.gitignore
