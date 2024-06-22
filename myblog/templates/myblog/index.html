@@ -15,7 +15,7 @@
               <div class="swiper-slide">\
                 {% load static %}
                 <a href="/myblog/single-post.html/{{ obj.blog.id }}" class="img-bg d-flex align-items-end"
-                  style="background-image: url('{% static obj.blog.image %}');">
+                  style="background-image: url('/media/{{obj.blog.image }}');">
                   <div class="img-bg-inner">
                     <h2>{{ obj.blog.title }}</h2>
                     <p>{{ obj.blog.summary }}</p>
@@ -64,7 +64,7 @@
           {% for obj in featuredblog %}
           {% if obj.type == 'all-top' %}
           <div class="post-entry-1 lg">
-            <a href="/myblog/single-post.html/{{obj.blog.id }}"><img src="{% static obj.blog.image %}" alt=""
+            <a href="/myblog/single-post.html/{{obj.blog.id }}"><img src="/media/{{obj.blog.image }}" alt=""
                 class="img-fluid"></a>
             <div class="post-meta"><span class="date">{{ obj.blog.category.name }}</span> <span
                 class="mx-1">&bullet;</span> <span>{{ obj.blog.time }}</span></div>
@@ -101,7 +101,7 @@
               {% for obj in all_normal_featuredblog %}
 
               {% if forloop.counter <= 3 %} <div class="post-entry-1">
-                <a href="/myblog/single-post.html/{{ obj.blog.id }}"><img src="{% static obj.blog.image %}" alt=""
+                <a href="/myblog/single-post.html/{{ obj.blog.id }}"><img src="/media/{{obj.blog.image }}" alt=""
                     class="img-fluid"></a>
                 <div class="post-meta"><span class="date">{{ obj.blog.category.name }}</span> <span
                     class="mx-1">&bullet;</span> <span>{{ obj.blog.time }}</span></div>
@@ -136,7 +136,7 @@
             {% if forloop.counter > 3 %}
           
             <div class="post-entry-1">
-              <a href="/myblog/single-post.html/{{obj.blog.id }}"><img src="{% static obj.blog.image %}" alt=""
+              <a href="/myblog/single-post.html/{{obj.blog.id }}"><img src="/media/{{obj.blog.image }}" alt=""
                   class="img-fluid"></a>
               <div class="post-meta"><span class="date">{{ obj.blog.category.name }}</span> <span
                   class="mx-1">&bullet;</span> <span>{{ obj.blog.time }}</span></div>

@@ -169,14 +169,14 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, "static"),
+    os.path.join(BASE_DIR, "static"),os.path.join(BASE_DIR, "media")
 ]
 
-MEDIA_URL = '/media/'
+MEDIA_URL = 'media/'
 if DEBUG:
-    MEDIA_ROOT = os.path.join(BASE_DIR, "static")
+    MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 else :
-    MEDIA_ROOT = os.path.join(BASE_DIR, "staticfiles")
+    MEDIA_ROOT = os.path.join(BASE_DIR, "mediafiles")
 
 #Markdownx设置
 MARKDOWNX_MARKDOWN_EXTENSIONS = [
