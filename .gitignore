@@ -26,3 +26,6 @@ workedit/migrations/
 myblog/migrations/
 media/
 mediafiles/
+
+!.gitkeep
+!.gitignore
