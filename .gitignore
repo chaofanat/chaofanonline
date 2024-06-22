@@ -1,17 +1,17 @@
 
-!*.gitkeep
-!*.gitignore
+!*/.gitkeep
+!*/.gitignore
 
 nginx-1.24.0/logs/nginx.pid
-ChaoFanOnline/__pycache__/
-staticfiles/tools/TTSaudio/
-staticfiles/myblog/assets/
-static/myblog/assets/
-tools/__pycache__/
-workedit/__pycache__/
-myblog/__pycache__/
-tools/migrations/
-workedit/migrations/
-myblog/migrations/
-media/
-mediafiles/
+ChaoFanOnline/__pycache__/*
+staticfiles/tools/TTSaudio/*
+staticfiles/myblog/assets/*
+static/myblog/assets/*
+tools/__pycache__/*
+workedit/__pycache__/*
+myblog/__pycache__/*
+tools/migrations/*
+workedit/migrations/*
+myblog/migrations/*
+media/*
+mediafiles/*
