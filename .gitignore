@@ -1,3 +1,7 @@
+
+!*.gitkeep
+!*.gitignore
+
 nginx-1.24.0/logs/nginx.pid
 ChaoFanOnline/__pycache__/
 staticfiles/tools/TTSaudio/
@@ -11,6 +15,3 @@ workedit/migrations/
 myblog/migrations/
 media/
 mediafiles/
-
-!*.gitkeep
-!*.gitignore
