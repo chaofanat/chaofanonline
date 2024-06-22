@@ -59,6 +59,17 @@
           <li><a href="/myblog/category.html">分类</a>
             <li><a href="/myblog/tag.html">标签归类</a></li>
           </li>
+          <!-- 下拉菜单链接工具 -->
+           <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              工具
+            </a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="{% url 'index' %}">小说发布与写作</a></li>
+              <li><a class="dropdown-item" href="{% url 'tools_index'  %}">小工具</a></li>  
+              <li><a class="dropdown-item" href="{% url 'ai_chat' %}">AI Chat</a></li>
+            </ul>
+          </li>
 
           <!-- <li><a href="/myblog/about.html">关于</a></li> -->
           <li><a href="/myblog/contact.html">联系方式</a></li>
@@ -181,11 +192,11 @@
 
           <div class="col-md-6">
             <div class="social-links mb-3 mb-lg-0 text-center text-md-end">
-              <a href="#" class="twitter"><i class="bi bi-twitter"></i></a>
+              <!-- <a href="#" class="twitter"><i class="bi bi-twitter"></i></a>
               <a href="#" class="facebook"><i class="bi bi-facebook"></i></a>
               <a href="#" class="instagram"><i class="bi bi-instagram"></i></a>
               <a href="#" class="google-plus"><i class="bi bi-skype"></i></a>
-              <a href="#" class="linkedin"><i class="bi bi-linkedin"></i></a>
+              <a href="#" class="linkedin"><i class="bi bi-linkedin"></i></a> -->
             </div>
 
           </div>
