@@ -121,10 +121,7 @@ def about(request):
     return render(request,'myblog/about.html')
 
 
-def blogpost(request, slug):
-    blogs = Blog.objects.filter(slug=slug).first()
-    context_dict= {'blogs': blogs}
-    return render(request, 'blogpost.html', context_dict)
+
     
    
 
@@ -145,5 +142,39 @@ def contact(request):
     return render(request, 'myblog/contact.html', context)
 
 
-def search(request):
-    return render(request, 'myblog/search-post.html')
+# def search(request):
+#     return render(request, 'myblog/search-post.html')
+
+
+from django.shortcuts import render, redirect
+from django.contrib.auth.decorators import login_required
+from .forms import BlogForm  
+
+from workedit.models import Aiapikey
+@login_required
+def blog_create(request):
+    if request.method == 'POST':
+        form = BlogForm(request.POST, request.FILES)
+        if form.is_valid():
+            # 将表单数据保存到数据库，author字段直接从request.user获取
+            new_blog = form.save(commit=False)
+            new_blog.author = request.user
+            new_blog.save()
+            # 添加多对多关系的tags
+            form.save_m2m()
+            return redirect( 'post_detail', id=new_blog.pk)  # 假设您有blog_detail的URL来显示博客详情
+    else:
+        form = BlogForm()
+    
+    # 获取所有分类和标签供表单选择
+    categories = Category.objects.all()
+    tags = Tag.objects.all()
+    
+    context = {
+        'form': form,
+        'categories': categories,
+        'tags': tags,
+        'ai_apikey': Aiapikey.objects.filter(user=request.user,key_name='wenxin').first().key,
+    }
+    
+    return render(request, 'myblog/write.html', context)

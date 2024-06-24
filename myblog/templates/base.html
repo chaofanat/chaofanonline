@@ -30,7 +30,7 @@
   <!-- Template Main CSS Files -->
   <link href="/static/myblog/assets/css/variables.css" rel="stylesheet">
   <link href="/static/myblog/assets/css/main.css" rel="stylesheet">
-
+  <link href="/static/myblog/assets/css/aieditor.css" rel="stylesheet">
   <!-- =======================================================
   * Template Name: ZenBlog
   * Template URL: https://bootstrapmade.com/zenblog-bootstrap-blog-template/
@@ -56,17 +56,18 @@
         <ul>
           <li><a href="/myblog/index.html">博客主页</a></li>
           <li><a href="/myblog/single-post.html">阅读</a></li>
+          <li><a href="/myblog/blog_create.html">写作</a></li>
           <li><a href="/myblog/category.html">分类</a>
-            <li><a href="/myblog/tag.html">标签归类</a></li>
+          <li><a href="/myblog/tag.html">标签归类</a></li>
           </li>
           <!-- 下拉菜单链接工具 -->
-           <li class="nav-item dropdown">
+          <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
               工具
             </a>
             <ul class="dropdown-menu">
               <li><a class="dropdown-item" href="{% url 'index' %}">小说发布与写作</a></li>
-              <li><a class="dropdown-item" href="{% url 'tools_index'  %}">小工具</a></li>  
+              <li><a class="dropdown-item" href="{% url 'tools_index'  %}">小工具</a></li>
               <li><a class="dropdown-item" href="{% url 'ai_chat' %}">AI Chat</a></li>
             </ul>
           </li>
@@ -89,19 +90,19 @@
           <form action="https://www.baidu.com/s" method="get" class="search-form" id="search-form">
             <span class="icon bi-search" onclick="search()"></span>
             <script>
-              function search(){
+              function search() {
                 const form = document.getElementById('search-form');
-                form.wd.value= form.wd.value+" site:chaofan.online";
+                form.wd.value = form.wd.value + " site:chaofan.online";
                 form.submit();
               }
             </script>
             <input type="text" placeholder="Search" name='wd' class="form-control">
-            
+
             <button class="btn js-search-close"><span class="bi-x"></span></button>
-            
+
           </form>
         </div><!-- End Search Form -->
-        
+
       </div>
 
     </div>
@@ -141,7 +142,7 @@
             <h3 class="footer-heading">外链</h3>
             <ul class="footer-links list-unstyled">
               <!-- <li><a href="/myblog/category.html"><i class="bi bi-chevron-right"></i> Business</a></li> -->
-             
+
 
             </ul>
           </div>
@@ -185,7 +186,8 @@
               <!-- Purchase the pro version with working PHP/AJAX contact form: https://bootstrapmade.com/herobiz-bootstrap-business-template/ -->
               <a href="https://beian.miit.gov.cn/" target="_blank">蜀ICP备2024052011号-1</a>&bullet;
               <img src="{% static 'workedit/picture/beian.png' %}" width="16px" height="16px">
-              <a href=\"https://beian.mps.gov.cn/#/query/webSearch?code=51132102000222\" rel=\"noreferrer\" target=\"_blank\">川公网安备51132102000222</a>
+              <a href=\"https://beian.mps.gov.cn/#/query/webSearch?code=51132102000222\" rel=\"noreferrer\"
+                target=\"_blank\">川公网安备51132102000222</a>
             </div>
 
           </div>
@@ -220,6 +222,94 @@
 
   <!-- Template Main JS File -->
   <script src="/static/myblog/assets/js/main.js"></script>
+
+
+  <script src="/static/myblog/assets/js/aieditor.js "></script>
+  <script type="module">
+    import { AiEditor } from '/static/myblog/assets/js/aieditor.js';
+
+
+
+    //获取文心一言token
+    // function getAccessToken() {
+    //   const AK = '***';
+    //   const SK = '***';
+
+    //   const url = `https://aip.baidubce.com/oauth/2.0/token?grant_type=client_credentials&client_id=${AK}&client_secret=${SK}`;
+
+    //   return fetch(url, {
+    //     method: 'POST', 
+    //     mode: 'no-cors'
+    //     // 注意：由于参数直接拼接在URL中，这里应使用GET方法
+    //   })
+    //     .then(response => {
+    //       if (!response.ok) {
+    //         throw new Error(`HTTP error! status: ${response.status}`);
+    //       }
+    //       return response.json(); // 解析响应体为JSON
+    //     })
+    //     .then(data => {
+    //       return data.access_token; // 返回access_token
+    //     })
+    //     .catch(error => {
+    //       console.error('There was a problem with the fetch operation:', error);
+    //       throw error; // 重新抛出错误，以便在调用处可以处理
+    //     });
+    // }
+
+
+
+
+
+
+
+
+    const aieditor = new AiEditor({
+      element: "#aiEditor",
+      placeholder: "点击输入内容...",
+      content: 'AiEditor 是一个面向 AI 的下一代富文本编辑器。',
+      ai: {
+        models: {
+          wenxin: {
+            access_token: "{{ai_apikey}}",
+            protocol: "ssl",
+            version: "v1.0"
+          }
+        }
+      },
+
+    })
+
+    //  //检查aieditor是否加载完成,若加载完成弹出提示框显示aieditor已经加载完成反之显示未加载完成
+    //  if (aieditor) {
+    //         alert("aieditor加载完成:"+aieditor.getHtml())
+    //     } else {
+    //         alert("aieditor未加载完成")
+    //     }
+
+
+    document.addEventListener("DOMContentLoaded", (event) => {
+
+
+
+      //监听表单提交行为
+      if (document.getElementById("blogForm")) {
+        document.getElementById("blogForm").addEventListener("submit", (event) => {
+          event.preventDefault(); //阻止表单默认提交行为
+          //获取富文本编辑器中的内容
+          const content = aieditor.getHtml();
+          //将富文本编辑器中的内容赋值给隐藏域
+          document.getElementById("textcontent").value = content;
+          //提交表单
+          document.getElementById("blogForm").submit();
+        })
+      }
+
+    })
+
+  </script>
+
+
 
 </body>
 

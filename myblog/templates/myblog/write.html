@@ -1,0 +1,60 @@
+
+{% extends 'base.html' %}
+{% block content %}
+<main class="container mt-5">
+    <h2 class="mb-4">撰写新博客</h2>
+    <form method="post" action="{% url 'blog_create' %}" enctype="multipart/form-data" id="blogForm">
+        {% csrf_token %}
+        <div class="mb-3">
+            <label for="title" class="form-label">标题</label>
+            <input type="text" class="form-control" id="title" name="title" required>
+        </div>
+        <div class="mb-3">
+          
+         
+            <label for="content" class="form-label">内容</label>
+            <div id="aiEditor" style="height: 550px;  margin: 20px" ></div>
+            <textarea class="form-control" id="textcontent" name="content"  hidden></textarea>
+
+        </div>
+        <div class="mb-3">
+            <label for="slug" class="form-label">Slug</label>
+            <input type="text" class="form-control" id="slug" name="slug" placeholder="三到五个词，用短横线连接" required>
+        </div>
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <label for="category" class="form-label">类别</label>
+                <select class="form-select" id="category" name="category" required>
+                    {% for category in categories %}
+                        <option value="{{ category.id }}">{{ category.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-md-6">
+                <label for="image" class="form-label">封面图片</label>
+                <input class="form-control" type="file" id="image" name="image">
+            </div>
+        </div>
+        <div class="mb-3">
+            <label for="author" class="form-label">作者</label>
+            <input type="text" class="form-control" id="author" name="author" value="{{ user.username }}" readonly>
+        </div>
+        <div class="mb-3">
+            <label for="summary" class="form-label">摘要</label>
+            <textarea class="form-control" id="summary" name="summary" rows="3"></textarea>
+        </div>
+        <div class="mb-3">
+            <label for="tags" class="form-label">标签</label>
+            <select class="form-select" id="tags" name="tags" multiple>
+                {% for tag in tags %}
+                    <option value="{{ tag.id }}">{{ tag.name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <button type="submit" class="btn btn-primary">发布博客</button>
+    </form>
+</main>
+<hr>
+
+
+{% endblock %}

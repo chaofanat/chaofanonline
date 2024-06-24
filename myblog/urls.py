@@ -13,6 +13,7 @@ urlpatterns = [
     path('',views.index,name='blogindex'),
     path('index.html',views.index,name='blogindex'),
     path('single-post.html/<int:id>',views.single_post,name='single_post_for_single_post_page'),
+    path('post-detail/<int:id>',views.single_post,name = 'post_detail'),
     path('single-post.html',views.single_post,name='single_post'),
     path('category.html',views.category,name='category'),
     path('category.html/<int:page>/<int:categoryid>',views.category,name='category_for_category_page'),
@@ -20,10 +21,10 @@ urlpatterns = [
     path('tag.html',views.tag,name='tag'),
     path('tag.html/<int:page>/<int:tagid>',views.tag,name='tag_for_tag_page'),
     path('tag.html/<int:tagid>',views.tag,name='tag_for_tag'),
-    path('blogpost/<str:slug>',views.blogpost,name='blogpost'),
+    path('blog_create.html',views.blog_create,name='blog_create'),
     path('about.html',views.about,name='about'),
     path('contact.html',views.contact,name='contact'),
-    path('search-result.html',views.search,name='search')
+
 ]
 
 
