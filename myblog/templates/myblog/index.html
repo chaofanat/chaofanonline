@@ -12,7 +12,7 @@
               {% if featuredblog %}
               {% for obj in featuredblog %}
               {% if obj.type == 'carousel' %}
-              <div class="swiper-slide">\
+              <div class="swiper-slide">
                 {% load static %}
                 <a href="/myblog/single-post.html/{{ obj.blog.id }}" class="img-bg d-flex align-items-end"
                   style="background-image: url('/media/{{obj.blog.image }}');">
