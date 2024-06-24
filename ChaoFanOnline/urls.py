@@ -60,7 +60,7 @@ if settings.DEBUG:
 else:
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
-#添加meida文件访问
+#添加media文件访问
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.STATICFILES_DIRS[1])
 else:

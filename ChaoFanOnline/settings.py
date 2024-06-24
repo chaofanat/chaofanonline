@@ -173,10 +173,8 @@ STATICFILES_DIRS = [
 ]
 
 MEDIA_URL = 'media/'
-if DEBUG:
-    MEDIA_ROOT = os.path.join(BASE_DIR, "media")
-else :
-    MEDIA_ROOT = os.path.join(BASE_DIR, "mediafiles")
+
+MEDIA_ROOT = os.path.join(BASE_DIR, "mediafiles")
 
 #Markdownx设置
 MARKDOWNX_MARKDOWN_EXTENSIONS = [
