@@ -24,7 +24,7 @@ MESSAGE_FRAMEWORK = True
 SECRET_KEY = 'django-insecure-0j$biuvn-co4^&(kqusa5-aj6p4*jz$f4%+u*37wz)k&o64j73'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['*']
 
@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'corsheaders',
     #应用注册
     'workedit.apps.WorkeditConfig',
     'ckeditor',
@@ -73,6 +74,7 @@ CKEDITOR_CONFIGS = {
 }
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -81,6 +83,30 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
+
+#处理跨域问题
+# settings.py
+CORS_ORIGIN_ALLOW_ALL = True
+# settings.py
+#允许所有域名跨域(优先选择)
+CORS_ORIGIN_ALLOW_ALL = True
+
+# settings.py
+CORS_ALLOW_CREDENTIALS = True
+SECURE_CROSS_ORIGIN_OPENER_POLICY = 'None'
+
+# 配置白名单
+# CORS_ORIGIN_WHITELIST = (
+#     '*'
+#     # '127.0.0.1:8000',
+#     # 'localhost:8000',
+#     # '127.0.0.1:8080',
+#     # 'localhost:8080',
+#'ads-cms-api.aataotao.com:8000'
+#'taoduoduo-test.oss-cn-#shenzhen.aliyuncs.com:80',  # 线上
+# #'10.0.2.187:8080'  # 本地
+#)
 
 ROOT_URLCONF = 'ChaoFanOnline.urls'
 import os
@@ -95,6 +121,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'django.template.context_processors.media',
             ],
         },
     },

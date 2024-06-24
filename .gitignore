@@ -1,11 +1,6 @@
-
-
-
 nginx-1.24.0/logs/nginx.pid
 ChaoFanOnline/__pycache__/*
 staticfiles/tools/TTSaudio/*
-staticfiles/myblog/assets/*
-static/myblog/assets/img/*
 tools/__pycache__/*
 workedit/__pycache__/*
 myblog/__pycache__/*

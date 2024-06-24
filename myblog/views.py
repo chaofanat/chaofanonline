@@ -50,7 +50,8 @@ def category(request,page=1,categoryid=None):
         category = Category.objects.filter(id=categoryid)[0]
         
     else :
-        category = Category.objects.all()[0]
+        latestblog = Blog.objects.all().order_by('-time').first()
+        category = latestblog.category
         blog = Blog.objects.filter(category=category)
 
 
@@ -90,7 +91,8 @@ def tag(request,page=1,tagid=None):
         tag = Tag.objects.filter(id=tagid)[0]
         
     else :
-        tag = Tag.objects.all()[0]
+        latestblog = Blog.objects.all().order_by('-time').first()
+        tag = latestblog.tags.first()
         blog = Blog.objects.filter(tags=tag)
     
     length=len(blog)
@@ -169,7 +171,9 @@ def blog_create(request):
     # 获取所有分类和标签供表单选择
     categories = Category.objects.all()
     tags = Tag.objects.all()
-    
+    ai_api = Aiapikey.objects.filter(user=request.user,key_name='wenxin').first()
+    if not ai_api:
+        return redirect('ai_apikey')
     context = {
         'form': form,
         'categories': categories,
