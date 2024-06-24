@@ -24,6 +24,8 @@ urlpatterns = [
     path('blog_create.html',views.blog_create,name='blog_create'),
     path('about.html',views.about,name='about'),
     path('contact.html',views.contact,name='contact'),
+    path('create_tag',views.create_tag,name='create_tag'),
+    path('create_category',views.create_category,name='create_category'),
 
 ]
 

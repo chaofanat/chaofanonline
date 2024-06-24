@@ -178,3 +178,55 @@ def blog_create(request):
     }
     
     return render(request, 'myblog/write.html', context)
+
+import json
+
+def create_tag(request):
+    if request.method == 'POST':
+       #获取name字段
+        name = request.POST.get('name', None)
+        if not name:
+            return HttpResponse('{"status":"error","msg":"标签名称不能为空"}', content_type='application/json',status=400)
+        #判断是否已存在，若存在返回json提示错误
+        if Tag.objects.filter(name=name).exists():
+            return HttpResponse('{"status":"error","msg":"标签已存在"}', content_type='application/json',status=400)
+        else:
+            #若不存在则添加至数据库
+            tag = Tag(name=name)
+            tag.save()
+            #返回data
+            data = {
+                'id': tag.id,
+                'name': tag.name,
+            }
+            return HttpResponse(json.dumps(data), content_type='application/json',status=200)
+
+    
+    else:
+        return HttpResponse('{"status":"error","msg":"请求方式错误"}', content_type='application/json',status=400)
+       
+
+
+def create_category(request):
+    if request.method == 'POST':
+       #获取name字段
+        name = request.POST.get('name', None)
+        if not name:
+            return HttpResponse('{"status":"error","msg":"分类名称不能为空"}', content_type='application/json',status=400)
+        #判断是否已存在，若存在返回json提示错误
+        if Category.objects.filter(name=name).exists():
+            return HttpResponse('{"status":"error","msg":"分类已存在"}', content_type='application/json',status=400)
+        else:
+            #若不存在则添加至数据库
+            category = Category(name=name)
+            category.save()
+            #返回data
+            data = {
+                'id': category.id,
+                'name': category.name,
+            }
+            return HttpResponse(json.dumps(data), content_type='application/json',status=200)
+
+    
+    else:
+        return HttpResponse('{"status":"error","msg":"请求方式错误"}', content_type='application/json',status=400)

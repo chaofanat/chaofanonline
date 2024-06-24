@@ -17,8 +17,16 @@ class BlogForm(forms.ModelForm):
         self.fields['summary'].widget.attrs.update({'class': 'form-control', 'placeholder': '简短概述您的博客'})
         self.fields['tags'].widget.attrs.update({'class': 'form-select'})
 
-    # 可选：自定义slug字段的验证或生成逻辑
-    def clean_slug(self):
-        slug = self.cleaned_data['slug'].lower()  # 假设我们希望slug全为小写
-        # 这里可以添加更多的验证逻辑，比如检查slug是否唯一
-        return slug
+
+
+
+# class TagForm(forms.ModelForm):
+#     class Meta:
+#         model = Tag  # 指定关联的模型
+#         fields = ['name'] 
+
+
+# class CategoryForm(forms.ModelForm):
+#     class Meta:
+#         model = Category  # 指定关联的模型
+#         fields = ['name']
