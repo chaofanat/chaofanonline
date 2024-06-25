@@ -6,19 +6,20 @@
         {% csrf_token %}
         <div class="mb-3">
             <label for="title" class="form-label">标题</label>
-            <input type="text" class="form-control" id="title" name="title" required>
+            <input type="text" class="form-control" id="title" name="title" form="blogForm" required>
         </div>
         <div class="mb-3">
 
 
             <label for="content" class="form-label">内容</label>
+            <textarea form="blogForm" class="form-control" id="textcontent" name="content" hidden></textarea>
             <div id="aiEditor" style="height: 550px;  margin: 20px"></div>
-            <textarea class="form-control" id="textcontent" name="content" hidden></textarea>
+            
 
         </div>
         <div class="mb-3">
             <label for="slug" class="form-label">Slug</label>
-            <input type="text" class="form-control" id="slug" name="slug" placeholder="三到五个词，用短横线连接" required>
+            <input type="text" form="blogForm" class="form-control" id="slug" name="slug" placeholder="三到五个词，用短横线连接" required>
         </div>
         <div class="row mb-3">
             <div class="col-md-6">
@@ -47,7 +48,7 @@
                                 <form id="newCategoryForm">
                                     <div class="mb-3">
                                         <label for="newCategoryName" class="form-label">类别名称</label>
-                                        <input type="text" class="form-control" id="newCategoryName"
+                                        <input type="text" form="newCategoryForm" class="form-control" id="newCategoryName"
                                             name="newCategoryName" required>
                                     </div>
                                 </form>
@@ -103,23 +104,23 @@
             </div>
             <div class="col-md-6">
                 <label for="image" class="form-label">封面图片</label>
-                <input class="form-control" type="file" id="image" name="image">
+                <input class="form-control" form="blogForm" type="file" id="image" name="image">
             </div>
         </div>
         <div class="mb-3">
             <label for="author" class="form-label">作者</label>
-            <input type="text" class="form-control" id="author" name="author" value="{{ user.username }}" readonly>
+            <input type="text"  form="blogForm" class="form-control" id="author" name="author" value="{{ user.username }}" readonly>
         </div>
         <div class="mb-3">
             <label for="summary" class="form-label">摘要</label>
-            <textarea class="form-control" id="summary" name="summary" rows="3"></textarea>
+            <textarea class="form-control"  form="blogForm" id="summary" name="summary" rows="3"></textarea>
         </div>
         <div class="mb-3">
             <label for="tags" class="form-label">标签</label>
             <!-- 新增标签按钮 -->
             <button type="button" class="btn btn-secondary ms-2 bi bi-plus-circle-fill btn-sm"
             data-bs-toggle="modal" data-bs-target="#newTagModal" aria-label="新建标签"></button>
-            <select class="form-select" id="tags" name="tags" multiple>
+            <select class="form-select" form="blogForm" id="tags" name="tags" multiple>
                 {% for tag in tags %}
                 <option value="{{ tag.id }}">{{ tag.name }}</option>
                 {% endfor %}
@@ -139,7 +140,7 @@
                                 <form id="newTagForm">
                                     <div class="mb-3">
                                         <label for="newTagName" class="form-label">标签名称</label>
-                                        <input type="text" class="form-control" id="newTagName"
+                                        <input type="text" form="newTagForm" class="form-control" id="newTagName"
                                             name="newTagName" required>
                                     </div>
                                 </form>
@@ -193,7 +194,7 @@
                     </div>
                 </div>
         </div>
-        <button type="submit" class="btn btn-primary">发布博客</button>
+        <button type="submit" form="blogForm" class="btn btn-primary">发布博客</button>
     </form>
 </main>
 <hr>
