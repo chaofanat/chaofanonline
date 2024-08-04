@@ -44,6 +44,16 @@ urlpatterns += [
     path('myblog/', include('myblog.urls')),
 ]
 
+#add metaphysics app
+urlpatterns += [
+    path('metaphysics/', include('metaphysics.urls')),
+]
+
+#add flashcard app
+urlpatterns += [
+    path('flashcard/', include('flashcard.urls')),
+]
+
 #Add URL maps to redirect the base URL to our application
 #将myblog应用作为域名访问的主页
 from django.views.generic import RedirectView
@@ -75,4 +85,11 @@ else:
 from django.conf.urls import include
 urlpatterns += [
     path('accounts/', include('django.contrib.auth.urls')),
+]
+
+
+#ninjia api
+from .api import api
+urlpatterns += [
+    path('api/', api.urls),
 ]

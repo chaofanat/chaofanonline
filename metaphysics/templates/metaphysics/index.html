@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>周易在线算卦</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- jQuery and Bootstrap Bundle (includes Popper) -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
+</head>
+<body>
+
+<div class="container mt-5">
+    <h1 class="text-center mb-4">周易在线算卦</h1>
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <form id="questionForm">
+                <div class="mb-3">
+                    <label for="questionInput" class="form-label">请输入您的问题：</label>
+                    <textarea class="form-control" id="questionInput" rows="3"></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary w-100">开始算卦</button>
+            </form>
+            <div id="resultArea" class="mt-4">
+                <!-- 结果将显示在这里 -->
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+$(document).ready(function() {
+    $('#questionForm').submit(function(event) {
+        event.preventDefault(); // 阻止表单默认提交行为
+        let question = $('#questionInput').val();
+        if (question.trim() === '') {
+            alert('请先输入一个问题！');
+            return;
+        }
+        let result = generateHexagram(question);
+        displayResult(result);
+    });
+
+    // 生成卦象
+    function generateHexagram(question) {
+        let hexagram = [];
+        for (let i = 0; i < 6; i++) {
+            let coinFlip = Math.floor(Math.random() * 2); // 0 for yin, 1 for yang
+            hexagram.push(coinFlip);
+        }
+        return { question: question, hexagram: hexagram };
+    }
+
+    // 检查是否有动爻
+    function hasMovingStroke(hexagram) {
+        return hexagram.some(n => n === 1);
+    }
+    function displayResult(result) {
+        $('#resultArea').html(`
+            <div class="alert alert-info">
+                <h4 class="alert-heading">您的问题:</h4>
+                <p>${result.question}</p>
+                <hr>
+                <h4 class="alert-heading">卦象:</h4>
+                <p>${result.hexagram.map(n => n ? '⚊' : '⚋').join(' ')}</p>
+                <p class="mb-0">解析：此处应显示解析结果，但本示例未实现。</p>
+            </div>
+        `);
+    }
+});
+</script>
+
+</body>
+</html>
