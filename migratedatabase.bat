@@ -8,3 +8,6 @@ python manage.py createsuperuser
 
 
 python run.py
+
+@REM 生成requirements.txt
+pip freeze > requirements.txt

@@ -1,8 +1,49 @@
-{% extends "base_generic.html" %}
 
-{% block content %}
-<div id="main">
-  <p>您已经登出!</p>
-  <a href="{% url 'login'%}">点击这里重新登录</a>
-</div>
-{% endblock %}
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Logout Page</title>
+  <!-- Bootstrap CSS -->
+  {% load static %}
+  <link rel="stylesheet" href="{% static 'library/bootstrap5/css/bootstrap.min.css' %}" />
+  <link rel="shortcut icon" href="{% static 'picture/icon.png' %}" />
+  <!-- Optional: Add custom CSS for additional styling -->
+  <style>
+    body {
+      background-color: #f8f9fa;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      margin: 0;
+    }
+    .logout-container {
+      padding: 2rem;
+      border: 1px solid #dee2e6;
+      border-radius: 0.25rem;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="logout-container col-md-6 col-lg-6 col-sm-10">
+      <h1 class="text-center mb-4">登出成功</h1>
+      <p class="text-center">您已成功登出。</p>
+      <div class="d-flex justify-content-center mt-3">
+        <a href="{% url 'login' %}" class="btn btn-primary">重新登录</a>
+      </div>
+    </div>
+  </div>
+  <!-- Bootstrap JS (Optional) -->
+  <!-- 引入Bootstrap JS -->
+  <script type="text/javascript" src="{% static 'library/jquery.min.js' %}"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.4.4/umd/popper.min.js"></script>
+  <script type="text/javascript" src="{% static 'library/bootstrap5/js/bootstrap.bundle.min.js' %}"></script>
+</body>
+</html>
