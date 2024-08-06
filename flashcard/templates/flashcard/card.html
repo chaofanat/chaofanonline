@@ -69,7 +69,7 @@
                     method: "DELETE",
                     headers: {
                        "Content-Type": "application/json",
-                       'x-csrf-token': '{{ csrf_token() }}'
+                       "X-CSRFToken": "{{ csrf_token }}",
                     }
                 }).then(
                     response => {
