@@ -131,7 +131,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'ChaoFanOnline.wsgi.application'
 
-LOGIN_REDIRECT_URL = '/workedit'
+LOGIN_REDIRECT_URL = '/myblog'
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 

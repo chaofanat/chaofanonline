@@ -55,17 +55,14 @@
                 <div class="collapse navbar-collapse" id="navbarNav">
                     <ul class="navbar-nav  d-flex align-items-center justify-content-between" >
                     <li class="nav-item"><a class="nav-link" href="/flashcard/">闪卡主页</a></li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        工具
-                        </a>
-                        <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="{% url 'index' %}">小说发布与写作</a></li>
-                        <li><a class="dropdown-item" href="{% url 'tools_index'  %}">小工具</a></li>
-                        <li><a class="dropdown-item" href="{% url 'ai_chat' %}">AI Chat</a></li>
-                        </ul>
-                    </li>
+
                     <li class="nav-item"><a class="nav-link" href="/myblog/contact.html">联系方式</a></li>
+                    <li>
+                    <form class="nav-link" id="logout-form" style="display: inline;" method="post" action="{% url 'logout' %}" >
+                        {% csrf_token %}
+                        <button class="btn btn-link" type="submit" style="background: none;border: none;cursor: pointer;padding: 0;text-decoration: none;padding: 2px;">登出</button>
+                      </form>
+                      </li>
                     </ul>
                 </div>
             </div>
@@ -105,7 +102,7 @@
                                 <div class="d-flex justify-content-between align-items-center card-footer">
                                         <div><small class="fs-6">Id:${deck.id}</small></div>
                                         <div class="btn-group">
-                                        <a href="/flashcard/card/${deck.id}" class="btn btn-outline-success btn-sm">开始学习</a>
+                                        <a href="/flashcard/study/${deck.id}" class="btn btn-outline-success btn-sm">开始学习</a>
                                         <a href="/flashcard/card/${deck.id}" class="btn btn-outline-primary btn-sm">进入</a>
                                         <a href="#" id="deletecardset" data="${deck.id}" class="btn btn-outline-danger btn-sm">删除</a>
                                         </div>
@@ -224,7 +221,7 @@
         <!-- footer -->
         <footer class="footer">
             <div class="container">
-                <p>&copy; 2023 ChaoFanOnline-FlashCard. All rights reserved.</p>
+                <p>&copy; 2024 ChaoFanOnline-FlashCard. All rights reserved.</p>
             </div>
         </footer>
     </div>

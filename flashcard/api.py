@@ -195,6 +195,24 @@ def delete_flashcard(request, id: int):
     flashcard = get_object_or_404(Flashcard, id=id)
     flashcard.delete()
     return {"success": True}
+
+# study业务逻辑
+# knowledge_level 增加1
+@router.put("Flashcard/study/{int:id}",tags=["Flashcard"])
+def studyed(request, id: int):
+    """
+    学习闪卡
+    学习指定 ID 的闪卡，并返回更新后的闪卡的外部表示形式。
+    :param id: 闪卡的 ID\n
+    :type id: int\n
+    :return: 指定 ID 的闪卡的外部表示\n
+    :rtype: FlashcardOut\n
+    """
+    flashcard = get_object_or_404(Flashcard, id=id)
+    flashcard.knowledge_level += 1
+    flashcard.save()
+    return FlashcardOut.from_orm(flashcard)
+
     
 
 
