@@ -9,3 +9,8 @@ def add(request, a: int, b: int):
     return {"result": a + b}
 
 api.add_router("/flashcard", "flashcard.api.router")
+
+
+
+
+
