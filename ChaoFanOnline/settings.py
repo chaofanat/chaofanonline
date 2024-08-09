@@ -82,7 +82,7 @@ MIDDLEWARE = [
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
-    'ChaoFanOnline.custommiddleware.CustomCsrfViewMiddleware',
+    #'ChaoFanOnline.custommiddleware.CustomCsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
@@ -91,6 +91,19 @@ MIDDLEWARE = [
 
 #处理跨域问题
 # settings.py
+
+CORS_ALLOW_HEADERS = [
+    'accept',
+    'accept-encoding',
+    'authorization',
+    'content-type',
+    'dnt',
+    'origin',
+    'user-agent',
+    'x_csrftoken',  # 添加 x-csrftoken
+    'x-requested-with',
+]
+
 #允许所有域名跨域(优先选择)
 CORS_ORIGIN_ALLOW_ALL = True
 CSRF_HEADER_NAME = 'HTTP_X_CSRFTOKEN'
