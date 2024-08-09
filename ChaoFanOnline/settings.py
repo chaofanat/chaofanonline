@@ -74,13 +74,14 @@ CKEDITOR_CONFIGS = {
         'extraPlugins': ','.join(['codesnippet','image2','filebrowser','widget', 'lineutils']),
     },
 }
-
+import custommiddleware
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
+    'custommiddleware.CustomCsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
@@ -91,7 +92,7 @@ MIDDLEWARE = [
 # settings.py
 #允许所有域名跨域(优先选择)
 CORS_ORIGIN_ALLOW_ALL = True
-
+CSRF_HEADER_NAME = 'HTTP_X_CSRFTOKEN'
 # settings.py
 CORS_ALLOW_CREDENTIALS = True
 SECURE_CROSS_ORIGIN_OPENER_POLICY = 'None'
@@ -101,8 +102,10 @@ CSRF_TRUSTED_ORIGINS = [
 ]
 # 配置白名单
 CORS_ORIGIN_WHITELIST = (
-    '*'
-    # '127.0.0.1:8000',
+    'http://*',
+    'https://*',
+
+    
     # 'localhost:8000',
     # '127.0.0.1:8080',
     # 'localhost:8080',
