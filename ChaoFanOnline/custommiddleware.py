@@ -1,4 +1,4 @@
-# middleware.py
+
 from django.middleware.csrf import CsrfViewMiddleware
 
 class CustomCsrfViewMiddleware(CsrfViewMiddleware):

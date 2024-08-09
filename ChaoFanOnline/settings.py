@@ -74,14 +74,15 @@ CKEDITOR_CONFIGS = {
         'extraPlugins': ','.join(['codesnippet','image2','filebrowser','widget', 'lineutils']),
     },
 }
-import custommiddleware
+
+
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
-    'custommiddleware.CustomCsrfViewMiddleware',
+    'ChaoFanOnline.custommiddleware.CustomCsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
