@@ -11,20 +11,23 @@ from ninja_extra import NinjaExtraAPI
 
 
 
-class DjangoSessionAuth(SessionAuth):
-    def authenticate(self, request, token=None):
-
-        return super().authenticate(request,key=token)
-
-
+#jwt 认证器
+from django.contrib.auth import get_user_model
+class JWTTokenUser(HttpBearer,JWTBaseAuthentication):
+    def __init__(self) -> None:
+        super().__init__()
+        self.user_model = get_user_model()
+    def authenticate(self, request: HttpRequest, token: str) -> Any | None:
+        return super().jwt_authenticate(request, token)
+        
     
 
 
 
 
 
-api = NinjaExtraAPI(auth=DjangoSessionAuth(),version='0.0.0')
-
+api = NinjaExtraAPI(auth=JWTTokenUser(),csrf=False,version='1.0.0')
+api.register_controllers(NinjaJWTDefaultController)
 
 
 
@@ -42,7 +45,7 @@ def bearer(request):
 def add(request, a: int, b: int):
     return {"result": a + b}
 
-api.add_router("/flashcard", "flashcard.api.router")
+api.add_router("/flashcard", "flashcard.api_v1.router")
 
 
 

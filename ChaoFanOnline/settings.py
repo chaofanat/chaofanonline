@@ -24,7 +24,7 @@ MESSAGE_FRAMEWORK = True
 SECRET_KEY = 'django-insecure-0j$biuvn-co4^&(kqusa5-aj6p4*jz$f4%+u*37wz)k&o64j73'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
@@ -46,7 +46,9 @@ INSTALLED_APPS = [
     'tools.apps.ToolsConfig',
     'myblog.apps.MyblogConfig',
     'metaphysics.apps.MetaphysicsConfig',
-    'flashcard.apps.FlashcardConfig'
+    'flashcard.apps.FlashcardConfig',
+    'ninja_jwt',
+    'ninja_extra',
 ]
 
 #使用ck的工具栏并修改，宽度自适应

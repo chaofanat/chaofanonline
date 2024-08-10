@@ -90,7 +90,9 @@ urlpatterns += [
 
 #ninjia api
 from .api import api
+from .api_v1 import api as api_v1
 urlpatterns += [
+    path('api/v1/', api_v1.urls),
     path('api/', api.urls),
 ]
 
