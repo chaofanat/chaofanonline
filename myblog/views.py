@@ -119,8 +119,24 @@ def tag(request,page=1,tagid=None):
     return render(request, 'myblog/tag.html', result)
 
 
+import markdown
 def about(request):
-    return render(request,'myblog/about.html')
+
+    #读取项目根目录文件夹下的README.md文件
+    f = open('README.md', 'r', encoding='utf-8')
+    content = f.read()
+    f.close()
+    #将其从md格式转换为html格式
+    content = markdown.markdown(content)
+    checkedtext = '[X]'
+    checkedbox = '<input type="checkbox" checked disabled>'
+    unchecktext = '[ ]'
+    uncheckbox = '<input type="checkbox" disabled>'
+    content = content.replace(checkedtext, checkedbox)
+    content = content.replace(unchecktext, uncheckbox)
+
+    result={'content': content}
+    return render(request,'myblog/about.html', result)
 
 
 
