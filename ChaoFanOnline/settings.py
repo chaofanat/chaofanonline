@@ -115,6 +115,7 @@ SECURE_CROSS_ORIGIN_OPENER_POLICY = 'None'
 CSRF_TRUSTED_ORIGINS = [
     'http://127.0.0.1',
     'http://localhost',
+    'http://*',
 ]
 # 配置白名单
 CORS_ORIGIN_WHITELIST = (
