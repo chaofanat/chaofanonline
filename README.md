@@ -1,4 +1,4 @@
-# chaofanonline
+# [ChaoFanOnline](https://github.com/chaofanat/chaofanonline "github地址")
 
 本网站用于个人web技术学习，目前已经用到的web技术有：
 
@@ -8,7 +8,6 @@
 - DRF
 - Nginx
 - Mysql
-
 
 chaofan的个人网站app：
 
@@ -24,3 +23,5 @@ chaofan的个人网站app：
 - [ ] 考虑引入redis数据库，django-redis技术
 - [ ] 集成一个更漂亮的admin系统
 - [ ] 集成一个多方登录认证系统
+- [ ] 相关数据建立文本向量数据库，搭建内容语义检索功能
+- [ ] 引入消息队列技术

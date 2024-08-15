@@ -26,6 +26,9 @@ urlpatterns = [
     path('contact.html',views.contact,name='contact'),
     path('create_tag',views.create_tag,name='create_tag'),
     path('create_category',views.create_category,name='create_category'),
+    #留言post
+    path('contact.html/message',views.leave_message,name='leave_message'),
+
 
 ]
 

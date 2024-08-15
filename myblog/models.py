@@ -84,4 +84,9 @@ class Contact(models.Model):
     time = models.DateTimeField(auto_now_add=True)
     
     def __str__(self):
-        return self.name
+        return f'{self.name} -> {self.email}'
+    
+    class Meta:
+        ordering = ['-time']
+        verbose_name = "留言"
+        verbose_name_plural = "留言"

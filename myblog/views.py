@@ -250,3 +250,18 @@ def create_category(request):
     
     else:
         return HttpResponse('{"status":"error","msg":"请求方式错误"}', content_type='application/json',status=400)
+    
+
+
+
+
+def leave_message(request):
+    if request.method == 'POST':
+        name = request.POST.get('name', None)
+        email = request.POST.get('email', None)
+        message = request.POST.get('message', None)
+        if not name or not email or not message:
+            return HttpResponse('{"status":"error","msg":"留言内容不能为空"}', content_type='application/json',status=400)
+        contact = Contact(name=name, email=email, message=message)
+        contact.save()
+        return HttpResponse('{"status":"success","msg":"留言成功"}', content_type='application/json',status=200)
