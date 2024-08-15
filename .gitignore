@@ -7,6 +7,7 @@ tools/templatetags/__pycache__/*
 workedit/__pycache__/*
 myblog/__pycache__/*
 flashcard/__pycache__/*
+metaphysics/__pycache__/*
 tools/migrations/*
 workedit/migrations/*
 myblog/migrations/*
