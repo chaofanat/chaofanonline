@@ -103,6 +103,7 @@
     <!-- 自定义 JavaScript -->
     <script>
         //从服务端获取闪卡数据
+        let konwn = 0;
         const flashcards = [];
         let currentIndex = 0;
 
@@ -145,7 +146,11 @@
 
         // 切换到下一张闪卡
         function nextFlashcard() {
-            flashcards.splice(currentIndex, 1);
+            if(konwn){
+                flashcards.splice(currentIndex, 1);
+                konwn = 0;
+            }
+            
             if (flashcards.length === 0) {
                 alert('所有卡片已显示完毕！');
                 //重定向网页
@@ -181,18 +186,21 @@
         document.addEventListener('DOMContentLoaded', function () {
             //renderFlashcard(flashcards[currentIndex]);
             document.getElementById('btn-wrong').addEventListener('click', () => {
-                moveToMiddle();
+                konwn = 0;
                 toggleCardBack(true);
+                moveToMiddle();
+                
 
             });
             document.getElementById('btn-right').addEventListener('click', () => {
+                konwn = 1;
                 toggleCardBack(true);
                 //提交服务器进行记录
                 fetch("/api/flashcard/Flashcard/study/"+flashcards[currentIndex].id, {
                     method: 'PUT',
                     headers: {
                         'Content-Type': 'application/json',
-                        'x-csrf-token': '{{ csrf_token }}'
+                        'X-CSRFToken': '{{ csrf_token }}'
                     },
                     body: JSON.stringify({
                         "correct": true
