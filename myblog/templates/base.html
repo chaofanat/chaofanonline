@@ -474,7 +474,39 @@
 
   </script>
 
+  <!-- 优化图片显示，双击放大 -->
+   <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const images = document.querySelectorAll('img');
+      images.forEach(image => {
+        image.addEventListener('dblclick', () => {
+          const img = document.createElement('img');
+          img.src = image.src;
+          img.style.position = 'fixed';
+          img.style.top = '0';
+          img.style.left = '0';
+          img.style.width = '100%';
 
+          document.body.appendChild(img);
+          img.addEventListener('click', () => {
+            document.body.removeChild(img);
+          })
+          img.addEventListener('dblclick', () => {
+            document.body.removeChild(img);
+          })
+          img.addEventListener('mousewheel', (event) => {
+            if (event.deltaY > 0) {
+              img.style.width = '100%';
+            } else {
+              img.style.width = '50%';
+            }
+          })
+          
+        })
+      })
+    })
+      
+   </script>
 
 </body>
 
