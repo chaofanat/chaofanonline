@@ -39,7 +39,7 @@
   * License: https:///bootstrapmade.com/license/
   ======================================================== -->
 
-<!-- 表单标签样式自定义 -->
+  <!-- 表单标签样式自定义 -->
   <style>
     .form-label {
       font-size: 1.2em;
@@ -56,6 +56,93 @@
       /* 图标与文本之间的间距 */
     }
   </style>
+
+  <!-- 引入自定义样式 -->
+  <style>
+    h1 {
+  font-size: 3em;
+  color: #333;
+}
+
+h2 {
+  font-size: 1.5em;
+  color: #444;
+}
+
+h3 {
+  font-size: 1.17em;
+  color: #555;
+}
+
+p {
+  font-size: 1em;
+  line-height: 1.6;
+  color: #585252;
+}
+
+ul, ol {
+  padding-left: 20px;
+}
+
+li {
+  margin-bottom: 0.5em;
+}
+
+em {
+  font-style: italic;
+  color: #888;
+}
+
+strong {
+  font-weight: bold;
+  color: #333;
+}
+
+
+a {
+  color: #007acc;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+pre {
+  background-color: #f8f8f8;
+  border: 1px solid #ddd;
+  padding: 1em;
+  overflow-x: auto;
+}
+
+code {
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 0.9em;
+  color: #333;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+table, th, td {
+  border: 1px solid #ccc;
+}
+
+th, td {
+  padding: 0.5em;
+  text-align: left;
+}
+
+
+  </style>
+
 </head>
 
 <body>
@@ -142,7 +229,7 @@
         <div class="row g-5">
           <div class="col-lg-4">
             <h3 class="footer-heading">写点什么？</h3>
-            <p>
+            <p style="color: #ccc;">
               在文字的海洋里航行，每一篇文章都是心灵的航标。拿起笔，不仅是记录生活，更是探索自我，创造无限可能。无论是一段短小的故事，还是一篇深邃的思考，每一次落笔都是勇气与灵感的火花碰撞。不要害怕白纸的空旷，它正等待着你用独特的色彩填满。写作，不仅是与世界的对话，也是与自己灵魂深处的邂逅。在这条路上，或许会有挑战与困惑，但正是这些让我们的思想更加坚韧，笔触愈发深刻。记住，伟大的作品往往源自平凡生活的细微观察与深刻感悟。继续写下去，让心灵的溪流汇聚成河，最终汇入智慧与情感的海洋。你的故事，就是这个世界独一无二的声音。现在，就让我们携手启程，用文字点亮心中的灯塔，照亮前行的道路。
             </p>
             <p><a href="/myblog/about.html" class="footer-link-more">Learn More</a></p>
@@ -332,49 +419,49 @@
           const tags = document.getElementById("tags");
           console.log(tags);
           for (let i = 0; i < tags.options.length; i++) {
-              if (tags.options[i].selected) {
-                  formData.append("tags", tags.options[i].value);
-              }
+            if (tags.options[i].selected) {
+              formData.append("tags", tags.options[i].value);
+            }
           }
-          
+
           formData.append("slug", document.getElementById("slug").value);
-          
+
           formData.append("author", document.getElementById("author").value);
           formData.append("summary", document.getElementById("summary").value);
           //添加图片文件
           const fileInput = document.getElementById("image");
           if (fileInput.files.length > 0) {
-              formData.append("image", fileInput.files[0]);
+            formData.append("image", fileInput.files[0]);
           }
           fetch("{% url 'blog_create' %}", {
-              method: "POST",
-              headers: {
-                  "X-CSRFToken": "{{ csrf_token }}",
-              },
-              body: formData,
+            method: "POST",
+            headers: {
+              "X-CSRFToken": "{{ csrf_token }}",
+            },
+            body: formData,
           })
-              .then((response) => {
-                  if (!response.ok) {
-                      // 如果响应状态不是 200 OK
-                      return response.json().then(data => {
-                          // 解析 JSON 响应体
-                          alert("发布博客失败: " + data.msg); // 显示错误消息
-                      }).catch(() => {
-                          // 如果解析 JSON 失败
-                          alert("发布博客失败: 未知错误");
-                      });
-                  } else {
-                      // 如果响应状态是 200 OK
-                      return response.json().then(data => {
-                          alert("发布博客成功");
-                          window.location.href = `/myblog/post-detail/${ data.new_blog_id}`;
-                      });
-                  }
-              })
-              .catch(error => {
-                  console.error("Fetch error:", error);
-                  alert("网络错误，请稍后再试");
-              });
+            .then((response) => {
+              if (!response.ok) {
+                // 如果响应状态不是 200 OK
+                return response.json().then(data => {
+                  // 解析 JSON 响应体
+                  alert("发布博客失败: " + data.msg); // 显示错误消息
+                }).catch(() => {
+                  // 如果解析 JSON 失败
+                  alert("发布博客失败: 未知错误");
+                });
+              } else {
+                // 如果响应状态是 200 OK
+                return response.json().then(data => {
+                  alert("发布博客成功");
+                  window.location.href = `/myblog/post-detail/${data.new_blog_id}`;
+                });
+              }
+            })
+            .catch(error => {
+              console.error("Fetch error:", error);
+              alert("网络错误，请稍后再试");
+            });
         })
       }
 
