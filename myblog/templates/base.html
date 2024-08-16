@@ -323,8 +323,58 @@
           const content = aieditor.getHtml();
           //将富文本编辑器中的内容赋值给隐藏域
           document.getElementById("textcontent").value = content;
-          //提交表单
-          document.getElementById("blogForm").submit();
+
+          const formData = new FormData();
+          formData.append("content", content);
+          formData.append("title", document.getElementById("title").value);
+          formData.append("category", document.getElementById("category").value);
+          //tags是多选的，所以需要获取所有选中的标签
+          const tags = document.getElementById("tags");
+          console.log(tags);
+          for (let i = 0; i < tags.options.length; i++) {
+              if (tags.options[i].selected) {
+                  formData.append("tags", tags.options[i].value);
+              }
+          }
+          
+          formData.append("slug", document.getElementById("slug").value);
+          
+          formData.append("author", document.getElementById("author").value);
+          formData.append("summary", document.getElementById("summary").value);
+          //添加图片文件
+          const fileInput = document.getElementById("image");
+          if (fileInput.files.length > 0) {
+              formData.append("image", fileInput.files[0]);
+          }
+          fetch("{% url 'blog_create' %}", {
+              method: "POST",
+              headers: {
+                  "X-CSRFToken": "{{ csrf_token }}",
+              },
+              body: formData,
+          })
+              .then((response) => {
+                  if (!response.ok) {
+                      // 如果响应状态不是 200 OK
+                      return response.json().then(data => {
+                          // 解析 JSON 响应体
+                          alert("发布博客失败: " + data.msg); // 显示错误消息
+                      }).catch(() => {
+                          // 如果解析 JSON 失败
+                          alert("发布博客失败: 未知错误");
+                      });
+                  } else {
+                      // 如果响应状态是 200 OK
+                      return response.json().then(data => {
+                          alert("发布博客成功");
+                          window.location.href = `/myblog/post-detail/${ data.new_blog_id}`;
+                      });
+                  }
+              })
+              .catch(error => {
+                  console.error("Fetch error:", error);
+                  alert("网络错误，请稍后再试");
+              });
         })
       }
 

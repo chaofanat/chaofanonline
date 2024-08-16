@@ -168,6 +168,8 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from .forms import BlogForm  
 
+from django.http import JsonResponse
+
 from workedit.models import Aiapikey
 @login_required
 def blog_create(request):
@@ -180,24 +182,30 @@ def blog_create(request):
             new_blog.save()
             # 添加多对多关系的tags
             form.save_m2m()
-            return redirect( 'post_detail', id=new_blog.pk)  # 假设您有blog_detail的URL来显示博客详情
+            return JsonResponse({"status":"success","msg": "博客创建成功", "new_blog_id":new_blog.pk}, content_type='application/json',status=200)
+            #return redirect( 'post_detail', id=new_blog.pk)  # 假设您有blog_detail的URL来显示博客详情
+        
+        else:
+            #处理表单验证失败的情况
+
+            return JsonResponse({"status":"error","msg": f"表单验证失败:{form.errors}"}, content_type='application/json',status=400)
     else:
         form = BlogForm()
     
-    # 获取所有分类和标签供表单选择
-    categories = Category.objects.all()
-    tags = Tag.objects.all()
-    ai_api = Aiapikey.objects.filter(user=request.user,key_name='wenxin').first()
-    if not ai_api:
-        return redirect('ai_apikey')
-    context = {
-        'form': form,
-        'categories': categories,
-        'tags': tags,
-        'ai_apikey': Aiapikey.objects.filter(user=request.user,key_name='wenxin').first().key,
-    }
-    
-    return render(request, 'myblog/write.html', context)
+        # 获取所有分类和标签供表单选择
+        categories = Category.objects.all()
+        tags = Tag.objects.all()
+        ai_api = Aiapikey.objects.filter(user=request.user,key_name='wenxin').first()
+        if not ai_api:
+            return redirect('ai_apikey')
+        context = {
+            'form': form,
+            'categories': categories,
+            'tags': tags,
+            'ai_apikey': Aiapikey.objects.filter(user=request.user,key_name='wenxin').first().key,
+        }
+        
+        return render(request, 'myblog/write.html', context)
 
 import json
 
