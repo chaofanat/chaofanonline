@@ -30,28 +30,28 @@ from django.views.generic.base import View
 
 from django.contrib.auth.models import User
 
-from .forms import RegisterForm
+# from .forms import RegisterForm
 
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 import datetime
 
-def UserCreate(request):
-    if request.method == 'POST':
-        form = RegisterForm(request.POST)
-        if form.is_valid():
-            user_name = form.cleaned_data['username']
-            password = form.cleaned_data['password1']
-            email = form.cleaned_data['email']
-            user = User.objects.create_user(user_name, email, password)
-            user.groups.add(1)
-            user.save()
-            #重定向至accounts/login页面
-            return HttpResponseRedirect('/accounts/login/')
+# def UserCreate(request):
+#     if request.method == 'POST':
+#         form = RegisterForm(request.POST)
+#         if form.is_valid():
+#             user_name = form.cleaned_data['username']
+#             password = form.cleaned_data['password1']
+#             email = form.cleaned_data['email']
+#             user = User.objects.create_user(user_name, email, password)
+#             user.groups.add(1)
+#             user.save()
+#             #重定向至accounts/login页面
+#             return HttpResponseRedirect('/accounts/login/')
             
-    else:
-        form = RegisterForm()
-    return render(request, 'workedit/user_form.html', {'form': form})
+#     else:
+#         form = RegisterForm()
+#     return render(request, 'workedit/user_form.html', {'form': form})
 
 
  

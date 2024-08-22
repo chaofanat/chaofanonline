@@ -83,7 +83,9 @@ else:
 
 
 from django.conf.urls import include
+from . import views
 urlpatterns += [
+    path('accounts/register/', views.UserCreate, name='register'),
     path('accounts/', include('django.contrib.auth.urls')),
 ]
 

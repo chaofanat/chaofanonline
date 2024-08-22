@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Login Page</title>
+  <title>Register Page</title>
   <!-- Bootstrap CSS -->
   {% load static %}
   <link rel="stylesheet" href="{% static 'library/bootstrap5/css/bootstrap.min.css' %}" />
@@ -30,39 +30,39 @@
   <div class="container">
   
   <div class="login-container col-md-6 col-lg-6 col-sm-10">
-    <h1 class="text-center mb-4 ">用户登录</h1>
+    <h1 class="text-center mb-4 ">用户注册</h1>
     {% if form.errors %}
       <div class="alert alert-danger" role="alert">
-        您的用户名和密码不匹配，请重试。
+       {{ form.errors }}
       </div>
     {% endif %}
 
-    {% if next %}
-      {% if user.is_authenticated %}
-        <p>您的账户没有访问此页面的权限。请使用具有访问权限的账户登录。</p>
-      {% else %}
-        <p>请登录以查看此页面。</p>
-      {% endif %}
-    {% endif %}
-
-    <form method="post" action="{% url 'login' %}">
+    <form method="post" action="{% url 'register' %}">
       {% csrf_token %}
+      <div class="mb-3">
+        <label for="email" class="form-label">邮箱:</label>
+        <input type="email" class="form-control" id="email" name="email" required>
+      </div>
       <div class="mb-3">
         <label for="username" class="form-label">用户名:</label>
         <input type="text" class="form-control" id="username" name="username" required>
       </div>
       <div class="mb-3">
-        <label for="password" class="form-label">密码:</label>
-        <input type="password" class="form-control" id="password" name="password" required>
+        <label for="password1" class="form-label">密码:</label>
+        <input type="password" class="form-control" id="password1" name="password1" required>
       </div>
-      <button type="submit" class="btn btn-primary">登录</button>
-      <!-- <div class="mt-3">
-        <a href="{% url 'password_reset' %}">忘记密码？</a>
-      </div> -->
+      <div class="mb-3">
+        <label for="password2" class="form-label">确认密码:</label>
+        <input type="password" class="form-control" id="password2" name="password2" required>
+      </div>
+      <button type="submit" class="btn btn-primary">注册</button>
+      <!-- 注释 注册成功会直接跳转至登录页面 -->
+       
+      <small class="m-3">tips:注册成功会直接跳转至登录页面</small>
+      
       <div class="mt-3">
-        还没有账号？ <a href="{% url 'register' %}">点击这里注册</a>.
+        已有账号？ <a href="{% url 'login' %}">点击这里登录</a>.
       </div>
-      <input type="hidden" name="next" value="{{ next }}">
     </form>
   </div>
 </div>
