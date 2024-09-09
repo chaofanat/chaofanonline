@@ -25,3 +25,5 @@ chaofan的个人网站app：
 - [ ] 集成一个多方登录认证系统
 - [ ] 相关数据建立文本向量数据库，搭建内容语义检索功能
 - [ ] 引入消息队列技术
+
+# 本项目已经完成重构，转移至项目[chaofan.online](https://github.com/chaofanat/chaofan.online)。
